@@ -4,4 +4,5 @@ export * from './memory';
 export * from './proxy';
 export * from './localStorage';
 export * from './attributes';
+export * from './websocket';
 //# sourceMappingURL=index.js.map

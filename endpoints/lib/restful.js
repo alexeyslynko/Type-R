@@ -1,10 +1,15 @@
 import { __assign, __awaiter, __generator, __rest } from "tslib";
 import { Model, log, isProduction } from '@type-r/models';
 import { memoryIO } from './memory';
+import { WebSocketEndpoint } from './websocket';
 export function create(url, fetchOptions) {
     return new RestfulEndpoint(url, fetchOptions);
 }
 export { create as restfulIO };
+export function restfulWebsocketIO(url, websocketUrl, options) {
+    if (options === void 0) { options = {}; }
+    return new RestfulWebSocketEndpoint(url, websocketUrl, options);
+}
 var RestfulEndpoint = (function () {
     function RestfulEndpoint(url, _a) {
         if (_a === void 0) { _a = {}; }
@@ -13,7 +18,7 @@ var RestfulEndpoint = (function () {
         this.fetchOptions = fetchOptions;
         this.memoryIO = mockData && !isProduction ? memoryIO(mockData, simulateDelay) : null;
         if (mockData && isProduction) {
-            log('error', 'Type-R:RestfulIO', "Mock data is used in production for " + url);
+            log('error', 'Type-R:RestfulIO', "Mock data is used in production for ".concat(url));
         }
     }
     RestfulEndpoint.prototype.create = function (json, options, model) {
@@ -51,7 +56,7 @@ var RestfulEndpoint = (function () {
     RestfulEndpoint.prototype.simulateIO = function (method, httpMethod, url, args) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                log(isProduction ? "error" : "info", 'Type-R:SimulatedIO', httpMethod + " " + url);
+                log(isProduction ? "error" : "info", 'Type-R:SimulatedIO', "".concat(httpMethod, " ").concat(url));
                 return [2, this.memoryIO[method].apply(this.memoryIO, args)];
             });
         });
@@ -79,17 +84,22 @@ var RestfulEndpoint = (function () {
         }
         return resultOptions;
     };
-    RestfulEndpoint.prototype.request = function (method, url, _a, body) {
-        var options = _a.options;
-        return fetch(url, this.buildRequestOptions(method, options, body))
-            .then(function (response) {
+    RestfulEndpoint.prototype.request = function (method, url, ioOptions, body) {
+        var options = ioOptions.options, idempotencyKey = ioOptions.idempotencyKey, expectedVersion = ioOptions.expectedVersion, headers = __assign({}, (options && options.headers));
+        if (idempotencyKey !== void 0) {
+            headers['Idempotency-Key'] = idempotencyKey;
+        }
+        if (expectedVersion !== void 0) {
+            headers['If-Match'] = String(expectedVersion);
+        }
+        return fetch(url, this.buildRequestOptions(method, __assign(__assign({}, options), { headers: headers }), body))
+            .then(function (response) { return response.text()
+            .then(function (text) {
             if (response.ok) {
-                return response.json();
+                return text ? JSON.parse(text) : null;
             }
-            else {
-                throw new Error(response.statusText);
-            }
-        });
+            throw new Error(getErrorMessage(response, text));
+        }); });
     };
     RestfulEndpoint.defaultFetchOptions = {
         cache: "no-cache",
@@ -100,6 +110,50 @@ var RestfulEndpoint = (function () {
     return RestfulEndpoint;
 }());
 export { RestfulEndpoint };
+var RestfulWebSocketEndpoint = (function () {
+    function RestfulWebSocketEndpoint(url, websocketUrl, options) {
+        if (options === void 0) { options = {}; }
+        this.options = options;
+        this.restful = new RestfulEndpoint(url, options);
+        this.websocket = new WebSocketEndpoint(websocketUrl, options);
+    }
+    RestfulWebSocketEndpoint.prototype.create = function (json, options, model) {
+        return this.restful.create(json, options, model);
+    };
+    RestfulWebSocketEndpoint.prototype.update = function (id, json, options, model) {
+        return this.restful.update(id, json, options, model);
+    };
+    RestfulWebSocketEndpoint.prototype.read = function (id, options, model) {
+        return this.restful.read(id, options, model);
+    };
+    RestfulWebSocketEndpoint.prototype.destroy = function (id, options, model) {
+        return this.restful.destroy(id, options, model);
+    };
+    RestfulWebSocketEndpoint.prototype.list = function (options, collection) {
+        return this.restful.list(options, collection);
+    };
+    RestfulWebSocketEndpoint.prototype.subscribe = function (events, collection) {
+        return this.websocket.subscribe(events, collection);
+    };
+    RestfulWebSocketEndpoint.prototype.unsubscribe = function (events, collection) {
+        return this.websocket.unsubscribe(events, collection);
+    };
+    return RestfulWebSocketEndpoint;
+}());
+export { RestfulWebSocketEndpoint };
+function getErrorMessage(response, text) {
+    var defaultMessage = response.statusText || "HTTP ".concat(response.status);
+    if (text) {
+        try {
+            var data = JSON.parse(text);
+            return data && (data.message || data.error || data.detail) || defaultMessage;
+        }
+        catch (e) {
+            return text;
+        }
+    }
+    return defaultMessage;
+}
 var UrlBuilder = (function () {
     function UrlBuilder(url) {
         this.url = url;
