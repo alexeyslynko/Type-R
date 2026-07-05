@@ -52,15 +52,10 @@ var WebSocketEndpoint = (function () {
     };
     WebSocketEndpoint.prototype.sendMessage = function (socket, message) {
         if (message !== void 0) {
-            socket.send(this.serialize(message));
+            socket.send(JSON.stringify(message));
         }
     };
-    WebSocketEndpoint.prototype.serialize = function (message) {
-        return this.options.serialize ? this.options.serialize(message) : JSON.stringify(message);
-    };
     WebSocketEndpoint.prototype.parseMessage = function (event) {
-        if (this.options.parse)
-            return this.options.parse(event);
         var data = event.data;
         return typeof data === 'string' ? JSON.parse(data) : data;
     };

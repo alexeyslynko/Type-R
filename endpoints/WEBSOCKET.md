@@ -9,7 +9,7 @@ Use it when you need:
 - `updated` and `removed` events applied to a collection;
 - no reconnect, replay, heartbeat, cursor, or protocol versioning.
 
-For production realtime protocols with reconnect, `since`, event replay, heartbeat, structured errors, and resync, use `@type-r/live-websocket`.
+Production realtime protocols can add reconnect, `since`, event replay, heartbeat, structured errors, and resync on top of this basic endpoint.
 
 ## Basic collection endpoint
 
@@ -108,8 +108,6 @@ await users.fetch({ liveUpdates: true })
 interface WebSocketEndpointOptions {
     WebSocket?: WebSocketConstructor
     protocols?: string | string[]
-    parse?: (event: MessageEvent) => any
-    serialize?: (message: any) => string
     match?: (message: any, collection?: any) => boolean
     subscribeMessage?: object | ((collection?: any) => any)
     unsubscribeMessage?: object | ((collection?: any) => any)
@@ -117,6 +115,8 @@ interface WebSocketEndpointOptions {
 ```
 
 `match` is important when several collections share the same socket. Without it, every message is delivered to every subscription on that socket.
+
+The basic endpoint uses JSON messages only: outgoing subscribe/unsubscribe messages are encoded with `JSON.stringify()`, and incoming string messages are decoded with `JSON.parse()`.
 
 ## Limitations
 
@@ -131,4 +131,4 @@ The basic endpoint intentionally does not implement:
 - structured protocol errors;
 - server shutdown handling.
 
-Use `@type-r/live-websocket` when you need these features.
+Use a custom endpoint when you need these features.

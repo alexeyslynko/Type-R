@@ -149,7 +149,7 @@ Compact envelopes are also supported:
 { removed : '1' }
 ```
 
-`websocketIO()` is intentionally small. It does not provide reconnect, heartbeat, subscribe acknowledgements, cursors, event replay, or resync. Use `@type-r/live-websocket` for a production realtime protocol with those features.
+`websocketIO()` is intentionally small. It does not provide reconnect, heartbeat, subscribe acknowledgements, cursors, event replay, or resync.
 
 ### restfulWebsocketIO( url, websocketUrl, options? )
 

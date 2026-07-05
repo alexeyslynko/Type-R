@@ -4,8 +4,6 @@ export type WebSocketMessageType = 'updated' | 'update' | 'created' | 'create' |
 export interface WebSocketEndpointOptions {
     WebSocket?: WebSocketConstructor;
     protocols?: string | string[];
-    parse?: (event: MessageEvent) => any;
-    serialize?: (message: any) => string;
     match?: (message: any, collection?: any) => boolean;
     subscribeMessage?: object | ((collection?: any) => any);
     unsubscribeMessage?: object | ((collection?: any) => any);
@@ -37,7 +35,6 @@ export declare class WebSocketEndpoint implements IOEndpoint {
     unsubscribe(events: any, collection?: any): void;
     getMessage(message: any, collection: any): any;
     sendMessage(socket: WebSocketLike, message: any): void;
-    private serialize;
     parseMessage(event: MessageEvent): any;
     acceptsMessage(message: any, collection?: any): boolean;
     handleMessage(events: any, message: any, collection?: any): void;

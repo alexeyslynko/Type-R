@@ -11,8 +11,6 @@ export type WebSocketMessageType =
 export interface WebSocketEndpointOptions {
     WebSocket? : WebSocketConstructor
     protocols? : string | string[]
-    parse? : ( event : MessageEvent ) => any
-    serialize? : ( message : any ) => string
     match? : ( message : any, collection? : any ) => boolean
     subscribeMessage? : object | ( ( collection? : any ) => any )
     unsubscribeMessage? : object | ( ( collection? : any ) => any )
@@ -100,17 +98,11 @@ export class WebSocketEndpoint implements IOEndpoint {
 
     sendMessage( socket : WebSocketLike, message ){
         if( message !== void 0 ) {
-            socket.send( this.serialize( message ) );
+            socket.send( JSON.stringify( message ) );
         }
     }
 
-    private serialize( message ){
-        return this.options.serialize ? this.options.serialize( message ) : JSON.stringify( message );
-    }
-
     parseMessage( event : MessageEvent ){
-        if( this.options.parse ) return this.options.parse( event );
-
         const { data } = event;
         return typeof data === 'string' ? JSON.parse( data ) : data;
     }
