@@ -187,10 +187,11 @@ describe( 'IO', function(){
 
                 .post( '/users' )
                 .reply( 200, function ( uri, requestBody ) {
+                    const body = requestBody as any;
                     let id   = ++usersStorage.counter,
                         user = {
                             id: String( id ),
-                            ...requestBody
+                            ...body
                         };
                     usersStorage.models.push( user );
                     return cloneUser( user );
@@ -198,10 +199,11 @@ describe( 'IO', function(){
 
                 .put( USER_REGEX )
                 .reply( function ( uri, requestBody ) {
+                    const body = requestBody as any;
                     const user = getUser( getUserId( uri ) );
 
                     if( user ) {
-                        user.name = requestBody.name
+                        user.name = body.name
                         return [ 200, cloneUser( user ) ]
                     }
                     else {
@@ -225,6 +227,51 @@ describe( 'IO', function(){
                 } )
 
             testEndpoint( restfulIO( 'http://restful.basic/users') )()
+        } )
+
+        describe( 'Error responses', () => {
+            @define
+            class User extends Record {
+                static endpoint = restfulIO( 'http://restful.errors/users' );
+
+                @auto name : string
+            }
+
+            it( 'uses JSON message from failed response', async () => {
+                nock( 'http://restful.errors' )
+                    .get( '/users/1' )
+                    .reply( 400, { message : 'Invalid user' } );
+
+                await expect( new User({ id : '1' }).fetch() )
+                    .rejects.toThrow( 'Invalid user' );
+            } );
+
+            it( 'uses alternate JSON error fields from failed response', async () => {
+                nock( 'http://restful.errors' )
+                    .get( '/users/2' )
+                    .reply( 422, { error : 'Validation failed' } );
+
+                await expect( new User({ id : '2' }).fetch() )
+                    .rejects.toThrow( 'Validation failed' );
+            } );
+
+            it( 'uses plain text from failed response', async () => {
+                nock( 'http://restful.errors' )
+                    .get( '/users/3' )
+                    .reply( 500, 'Backend unavailable' );
+
+                await expect( new User({ id : '3' }).fetch() )
+                    .rejects.toThrow( 'Backend unavailable' );
+            } );
+
+            it( 'falls back to HTTP status text for empty failed response', async () => {
+                nock( 'http://restful.errors' )
+                    .get( '/users/4' )
+                    .reply( 404 );
+
+                await expect( new User({ id : '4' }).fetch() )
+                    .rejects.toThrow( 'Not Found' );
+            } );
         } )
 
         describe( 'Relative urls', () => {

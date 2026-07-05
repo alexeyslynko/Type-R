@@ -82,14 +82,13 @@ var RestfulEndpoint = (function () {
     RestfulEndpoint.prototype.request = function (method, url, _a, body) {
         var options = _a.options;
         return fetch(url, this.buildRequestOptions(method, options, body))
-            .then(function (response) {
+            .then(function (response) { return response.text()
+            .then(function (text) {
             if (response.ok) {
-                return response.text().then(function (text) { return text ? JSON.parse(text) : null; });
+                return text ? JSON.parse(text) : null;
             }
-            else {
-                throw new Error(response.statusText);
-            }
-        });
+            throw new Error(getErrorMessage(response, text));
+        }); });
     };
     RestfulEndpoint.defaultFetchOptions = {
         cache: "no-cache",
@@ -100,6 +99,19 @@ var RestfulEndpoint = (function () {
     return RestfulEndpoint;
 }());
 export { RestfulEndpoint };
+function getErrorMessage(response, text) {
+    var defaultMessage = response.statusText || "HTTP ".concat(response.status);
+    if (text) {
+        try {
+            var data = JSON.parse(text);
+            return data && (data.message || data.error || data.detail) || defaultMessage;
+        }
+        catch (e) {
+            return text;
+        }
+    }
+    return defaultMessage;
+}
 var UrlBuilder = (function () {
     function UrlBuilder(url) {
         this.url = url;

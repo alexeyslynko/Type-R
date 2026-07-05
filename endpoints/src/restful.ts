@@ -128,15 +128,33 @@ export class RestfulEndpoint implements IOEndpoint {
     }
 
     protected request( method : HttpMethod, url : string, {options} : RestfulIOOptions, body? ) : Promise<any> {
-	        return fetch( url, this.buildRequestOptions( method, options, body ) )
-	            .then( response => {
-	                if( response.ok ) {
-	                    return response.text().then( text => text ? JSON.parse( text ) : null )
-	                } else {
-	                    throw new Error( response.statusText )
-	                }
-            } );
+        return fetch( url, this.buildRequestOptions( method, options, body ) )
+            .then( response => response.text()
+                .then( text => {
+                    if( response.ok ) {
+                        return text ? JSON.parse( text ) : null
+                    }
+
+                    throw new Error( getErrorMessage( response, text ) );
+                } )
+            );
     }
+}
+
+function getErrorMessage( response : Response, text : string ) {
+    const defaultMessage = response.statusText || `HTTP ${response.status}`;
+
+    if( text ) {
+        try {
+            const data = JSON.parse( text );
+            return data && ( data.message || data.error || data.detail ) || defaultMessage;
+        }
+        catch( e ) {
+            return text;
+        }
+    }
+
+    return defaultMessage;
 }
 
 export class UrlBuilder {
