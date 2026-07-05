@@ -128,13 +128,13 @@ export class RestfulEndpoint implements IOEndpoint {
     }
 
     protected request( method : HttpMethod, url : string, {options} : RestfulIOOptions, body? ) : Promise<any> {
-        return fetch( url, this.buildRequestOptions( method, options, body ) )
-            .then( response => {
-                if( response.ok ) {
-                    return response.json()
-                } else {
-                    throw new Error( response.statusText )
-                }
+	        return fetch( url, this.buildRequestOptions( method, options, body ) )
+	            .then( response => {
+	                if( response.ok ) {
+	                    return response.text().then( text => text ? JSON.parse( text ) : null )
+	                } else {
+	                    throw new Error( response.statusText )
+	                }
             } );
     }
 }

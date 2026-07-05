@@ -2,8 +2,8 @@ import { IOEndpoint } from '../../io-tools';
 import { LogLevel, Logger } from '@type-r/mixture';
 import { TransactionOptions } from '../../transactions';
 import { AttributesContainer, AttributeUpdatePipeline, ModelTransaction } from '../updates';
-export declare type Transform = (this: AnyType, next: any, prev: any, record: AttributesContainer, options: TransactionOptions) => any;
-export declare type ChangeHandler = (this: AnyType, next: any, prev: any, record: AttributesContainer, options: TransactionOptions) => void;
+export type Transform = (this: AnyType, next: any, prev: any, record: AttributesContainer, options: TransactionOptions) => any;
+export type ChangeHandler = (this: AnyType, next: any, prev: any, record: AttributesContainer, options: TransactionOptions) => void;
 export interface AttributeOptions {
     _metatype?: typeof AnyType;
     validate?: (record: AttributesContainer, value: any, key: string) => any;
@@ -20,11 +20,11 @@ export interface AttributeOptions {
     changeHandlers?: ChangeHandler[];
     _onChange?: ChangeAttrHandler;
 }
-export declare type Parse = (value: any, key?: string) => any;
-export declare type GetHook = (value: any, key?: string) => any;
-export declare type AttributeToJSON = (value: any, key?: string) => any;
-export declare type AttributeParse = (value: any, key?: string) => any;
-export declare type ChangeAttrHandler = ((value: any, attr?: string) => void) | string;
+export type Parse = (value: any, key?: string) => any;
+export type GetHook = (value: any, key?: string) => any;
+export type AttributeToJSON = (value: any, key?: string) => any;
+export type AttributeParse = (value: any, key?: string) => any;
+export type ChangeAttrHandler = ((value: any, attr?: string) => void) | string;
 export declare class AnyType implements AttributeUpdatePipeline {
     name: string;
     static create: (options: AttributeOptions, name: string) => AnyType;

@@ -71,7 +71,7 @@ export abstract class Transactional implements Messenger, IONode, Validatable, T
 
     // State accessor.
     /** @internal */
-    readonly __inner_state__ : any;
+    abstract get __inner_state__() : any;
 
     // Shared modifier (used by collections of shared models)
     /** @internal */

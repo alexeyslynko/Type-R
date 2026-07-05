@@ -8,14 +8,14 @@ var CompiledReference = (function () {
             if (key === '^' || key === 'owner')
                 return 'getOwner()';
             if (key[0] === '~')
-                return "getStore().get(\"" + key.substr(1) + "\")";
+                return "getStore().get(\"".concat(key.substr(1), "\")");
             if (key.indexOf('store.') === 0)
-                return "getStore().get(\"" + key.substr(6) + "\")";
+                return "getStore().get(\"".concat(key.substr(6), "\")");
             return key;
         });
         this.tail = splitTail && path.pop();
         this.local = !path.length;
-        this.resolve = new Function('self', "\n            var v = self." + path.shift() + ";\n                           \n            " + path.map(function (x) { return "\n                v = v && v." + x + ";\n            "; }).join('') + "\n\n            return v;\n        ");
+        this.resolve = new Function('self', "\n            var v = self.".concat(path.shift(), ";\n                           \n            ").concat(path.map(function (x) { return "\n                v = v && v.".concat(x, ";\n            "); }).join(''), "\n\n            return v;\n        "));
     }
     return CompiledReference;
 }());

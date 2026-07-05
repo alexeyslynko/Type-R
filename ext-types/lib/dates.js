@@ -15,7 +15,7 @@ var MicrosoftDateType = (function (_super) {
         }
         return DateType.prototype.convert.apply(this, arguments);
     };
-    MicrosoftDateType.prototype.toJSON = function (value) { return value && "/Date(" + value.getTime() + ")/"; };
+    MicrosoftDateType.prototype.toJSON = function (value) { return value && "/Date(".concat(value.getTime(), ")/"); };
     return MicrosoftDateType;
 }(DateType));
 export { MicrosoftDateType };

@@ -51,14 +51,6 @@ export class LinkedAttr<T> extends Linked<T> {
 
     _error : any
 
-    get error(){
-        return this._error || ( this._error = this.model.getValidationError( this.attr ) );
-    }
-
-    set error( x : any ){
-        this._error = x;
-    }
-
     // Attribute's descriptor.
     get descriptor(){
         return this.model._attributes[ this.attr ];
@@ -66,3 +58,11 @@ export class LinkedAttr<T> extends Linked<T> {
 }
 
 Object.defineProperty( LinkedAttr.prototype, '_changeToken', { value : null } );
+Object.defineProperty( LinkedAttr.prototype, 'error', {
+    get : function(){
+        return this._error || ( this._error = this.model.getValidationError( this.attr ) );
+    },
+    set : function( x : any ){
+        this._error = x;
+    }
+});

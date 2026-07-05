@@ -70,7 +70,7 @@ export class Collection< R extends Model = Model> extends Transactional implemen
     static of<M extends typeof Model>( Ctor : M ) : CollectionOf<M> {
         return typeof Ctor === 'function' ?
             Ctor.Collection as any :
-            attributes( Ctor ).Collection;
+            attributes( Ctor ).Collection as any;
     }
 
     /**

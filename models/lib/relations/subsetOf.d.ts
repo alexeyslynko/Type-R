@@ -2,7 +2,7 @@ import { Collection, CollectionConstructor, ElementsArg, CollectionOptions } fro
 import { ChainableAttributeSpec, Model } from '../model';
 import { CollectionReference } from './commons';
 export declare function subsetOf<X extends CollectionConstructor<R>, R extends Model>(this: void, masterCollection: CollectionReference, T?: X): ChainableAttributeSpec<SubsetCollectionConstructor<R>>;
-declare type subsetOfType = typeof subsetOf;
+type subsetOfType = typeof subsetOf;
 declare module "../collection" {
     namespace Collection {
         const subsetOf: subsetOfType;

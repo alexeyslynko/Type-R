@@ -3,7 +3,7 @@ export declare function isValidJSON(value: any): boolean;
 export declare function getBaseClass(Class: Function): any;
 export declare function assignToClassProto<T, K extends keyof T>(Class: any, definition: T, ...names: K[]): void;
 export declare function isEmpty(obj: {}): boolean;
-export declare type Iteratee = (value: any, key?: string | number) => any;
+export type Iteratee = (value: any, key?: string | number) => any;
 export declare function some(obj: any, fun: Iteratee): any;
 export declare function every(obj: {}, predicate: Iteratee): boolean;
 export declare function getPropertyDescriptor(obj: {}, prop: string): PropertyDescriptor;

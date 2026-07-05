@@ -1549,7 +1549,7 @@ users
 <li><code>model.destroy()</code> makes <code>DELETE url</code>.</li>
 </ul>
 <p>Supports URI relative to owner (<code>./relative/url</code> resolves as <code>/owner/:id/relative/url/:id</code> ).</p>
-<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { restfulIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'type-r/endpoints/restful'</span>
+<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { restfulIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'@type-r/endpoints'</span>
 
 @define <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Role</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span> </span>{
     <span class="hljs-keyword">static</span> endpoint = restfulIO( <span class="hljs-string">'/api/roles'</span> );
@@ -1568,7 +1568,7 @@ users
 </code></pre>
 <h3 id="memoryio-mockdata-delay-">memoryIO( mockData?, delay? )</h3>
 <p>Endpoint for mock testing. Takes optional array with mock data, and optional <code>delay</code> parameter which is the simulated I/O delay in milliseconds.</p>
-<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { memoryIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'type-r/endpoints/memory'</span>
+<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { memoryIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'@type-r/endpoints'</span>
 
 @define <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span> </span>{
     <span class="hljs-keyword">static</span> endpoint = memoryIO();
@@ -1577,7 +1577,7 @@ users
 </code></pre>
 <h3 id="localstorageio-key-">localStorageIO( key )</h3>
 <p>Endpoint for localStorage. Takes <code>key</code> parameter which must be unique for the persistent model&#39;s collection.</p>
-<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { localStorageIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'type-r/endpoints/localStorage'</span>
+<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { localStorageIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'@type-r/endpoints'</span>
 
 @define <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span> </span>{
     <span class="hljs-keyword">static</span> endpoint = localStorageIO( <span class="hljs-string">'/users'</span> );
@@ -1587,7 +1587,7 @@ users
 <h3 id="attributesio-">attributesIO()</h3>
 <p>Endpoint for I/O composition. Redirects model&#39;s <code>fetch()</code> request to its attributes and returns the combined abortable promise. Does not enable any other I/O methods and can be used with <code>model.fetch()</code> only.</p>
 <p>It&#39;s common pattern to use attributesIO endpoint in conjunction with Store to fetch all the data required by SPA page.</p>
-<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { localStorageIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'type-r/endpoints/attributes'</span>
+<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { attributesIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'@type-r/endpoints'</span>
 
 @define <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PageStore</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Store</span> </span>{
     <span class="hljs-keyword">static</span> endpoint = attributesIO();
@@ -1605,7 +1605,7 @@ store.fetch().then( <span class="hljs-function"><span class="hljs-params">()</sp
 <p>Assuming that you have Type-R models with endpoints working with the database, you can create an endpoint which will use
 an existing Model subclass as a transport. This endpoint can be connected to the RESTful endpoint API on the server side which will serve JSON to the restfulIO endpoint on the client.</p>
 <p>An advantage of this approach is that JSON schema will be transparently validated on the server side by the Type-R.</p>
-<pre><code class="highlight javascript">    <span class="hljs-keyword">import</span> { proxyIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'type-r/endpoint/proxy'</span>
+<pre><code class="highlight javascript">    <span class="hljs-keyword">import</span> { proxyIO } <span class="hljs-keyword">from</span> <span class="hljs-string">'@type-r/endpoints'</span>
 
     ...
 
@@ -1641,7 +1641,7 @@ an existing Model subclass as a transport. This endpoint can be connected to the
 <h3 id="createiopromise-init-">createIOPromise( init )</h3>
 <p>Service function to create an abortable version of ES6 promise (with <code>promise.abort()</code> which meant to stop pending I/O and reject the promise).</p>
 <p><code>init</code> function takes the third <code>onAbort</code> argument to register an optional abort handler. If no handler is registered, the default implementation of <code>promise.abort()</code> will just reject the promise.</p>
-<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { createIOPromise } <span class="hljs-keyword">from</span> <span class="hljs-string">'type-r'</span>
+<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { createIOPromise } <span class="hljs-keyword">from</span> <span class="hljs-string">'@type-r/models'</span>
 
 <span class="hljs-keyword">const</span> abortablePromise = createIOPromise( <span class="hljs-function">(<span class="hljs-params"> resolve, reject, onAbort </span>) =&gt;</span>{
     ...
@@ -2133,7 +2133,7 @@ React.Component.mixinRules({
 <li><code>source.on( &#39;ev&#39;, callback )</code> - callback will <em>not</em> be called in the context of <code>source</code> by default.</li>
 </ul>
 <p><code>Events</code> is a <a href="#mixins">mixin</a> giving the object the ability to bind and trigger custom named events.</p>
-<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { mixins, Events } <span class="hljs-keyword">from</span> <span class="hljs-string">'type-r'</span>
+<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { mixins, Events } <span class="hljs-keyword">from</span> <span class="hljs-string">'@type-r/mixture'</span>
 
 @mixins( Events )
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EventfulClass</span> </span>{
@@ -2280,7 +2280,7 @@ ec.on( <span class="hljs-string">'doneSomething'</span>, ( here, are, results ) 
 </table>
 <h2 id="class-messenger"><code>class</code> Messenger</h2>
 <p>Messenger is an abstract base class implementing Events mixin and some convenience methods.</p>
-<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { define, Messenger } <span class="hljs-keyword">from</span> <span class="hljs-string">'type-r'</span>
+<pre><code class="highlight javascript"><span class="hljs-keyword">import</span> { define, Messenger } <span class="hljs-keyword">from</span> <span class="hljs-string">'@type-r/mixture'</span>
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyMessenger</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Messenger</span> </span>{
 
@@ -2458,7 +2458,7 @@ logger.on( <span class="hljs-string">'error'</span>, ( subject, message, data ) 
 </table>
 <h3 id="new-attribute-definition-notation">New attribute definition notation</h3>
 <p>Starting from version 3.X, Type-R does not modify built-in global JS objects. New <code>type(T)</code> attribute definition notation is introduced to replace <code>T.has.</code></p>
-<p>There&#39;s <code>type-r/globals</code> package for compatibility with version 2.x which must be imported once with <code>import &#39;type-r/globals&#39;</code>.
+<p>There&#39;s <code>@type-r/globals</code> package for compatibility with version 2.x which must be imported once with <code>import &#39;@type-r/globals&#39;</code>.
 If this package is not used, the code must be refactored according to the rules below.</p>
 <table>
 <thead>
@@ -2472,17 +2472,17 @@ If this package is not used, the code must be refactored according to the rules 
 <tr>
 <td>UNIX Timestamp</td>
 <td><code>Date.timestamp</code></td>
-<td><code>import { Timestamp } from &#39;type-r/ext-types&#39;</code></td>
+<td><code>import { Timestamp } from &#39;@type-r/ext-types&#39;</code></td>
 </tr>
 <tr>
 <td>Microsoft date</td>
 <td><code>Date.microsoft</code></td>
-<td><code>import { MicrosoftDate } from &#39;type-r/ext-types&#39;</code></td>
+<td><code>import { MicrosoftDate } from &#39;@type-r/ext-types&#39;</code></td>
 </tr>
 <tr>
 <td>Integer</td>
 <td><code>Integer</code> and <code>Number.integer</code></td>
-<td><code>import { Integer } from &#39;type-r/ext-types&#39;</code></td>
+<td><code>import { Integer } from &#39;@type-r/ext-types&#39;</code></td>
 </tr>
 <tr>
 <td>Create metatype from constructor</td>

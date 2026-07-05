@@ -21,7 +21,7 @@ export interface IOEvents {
 }
 export declare function getOwnerEndpoint(self: any): IOEndpoint;
 export declare function createIOPromise(initialize: InitIOPromise): IOPromise<any>;
-export declare type InitIOPromise = (resolve: (x?: any) => void, reject: (x?: any) => void, abort?: (fn: Function) => void) => void;
+export type InitIOPromise = (resolve: (x?: any) => void, reject: (x?: any) => void, abort?: (fn: Function) => void) => void;
 export declare function startIO(self: IONode, promise: IOPromise<any>, options: IOOptions, thenDo: (json: any) => any): IOPromise<any>;
 export declare function abortIO(self: IONode): void;
 export declare function triggerAndBubble(eventSource: any, ...args: any[]): void;

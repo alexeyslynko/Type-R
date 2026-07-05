@@ -34,7 +34,7 @@ export declare function off(source: EventSource, name?: string, callback?: Callb
 export interface EventSource {
 }
 export declare function strings(api: ApiEntry, source: EventSource, events: string, callback: Callback, context: any): void;
-export declare type ApiEntry = (source: EventSource, event: string, callback: Callback, context?: any) => void;
+export type ApiEntry = (source: EventSource, event: string, callback: Callback, context?: any) => void;
 export declare function trigger2(self: EventSource, name: string, a: any, b: any): void;
 export declare function trigger3(self: EventSource, name: string, a: any, b: any, c: any): void;
 export declare function trigger5(self: EventSource, name: string, a: any, b: any, c: any, d: any, e: any): void;

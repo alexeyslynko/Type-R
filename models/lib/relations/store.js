@@ -22,7 +22,7 @@ var Store = (function (_super) {
             }
             Transactional.prototype._defaultStore = _store = store;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return Store;

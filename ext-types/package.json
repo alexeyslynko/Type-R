@@ -7,13 +7,19 @@
     "module": "./lib/index.js",
     "types": "./lib/index.d.ts",
     "scripts": {
-        "build":"tsc && rollup --config"
+        "build": "tsc && rollup --config"
     },
     "dependencies": {
-        "@type-r/models" : "^4.0.0",
-        "tslib" : "^1.10.0"
+        "@type-r/models": "^4.0.0",
+        "tslib": "^1.10.0"
+    },
+    "devDependencies": {
+        "rollup": "*",
+        "rollup-plugin-node-resolve": "*",
+        "rollup-plugin-sourcemaps": "*",
+        "rollup-plugin-uglify": "*",
+        "typescript": "6.0.3"
     },
     "author": "Ivan Terpugov",
     "license": "MIT"
 }
-  

@@ -30,7 +30,7 @@ export declare function parseAnonimousModelDefinition({ [metadata]: md, [collect
     };
     collection: {
         itemEvents?: {
-            [event: string]: string | true | ((...args: any[]) => void);
+            [event: string]: true | string | ((...args: any[]) => void);
         };
         comparator?: GenericComparator;
         initialize?(models?: any[], options?: object): void;
@@ -39,12 +39,12 @@ export declare function parseAnonimousModelDefinition({ [metadata]: md, [collect
         validate?(): any;
     };
 };
-export declare type AnonymousAttributes<D extends object> = AnonymousModelConstructor<D>;
-export declare type AnonymousModelConstructor<A extends object> = MakeModelConstructor<Model & ModelAttributes<A>, A>;
-export declare type ModelAttributes<A extends object> = InferAttrs<A> & {
+export type AnonymousAttributes<D extends object> = AnonymousModelConstructor<D>;
+export type AnonymousModelConstructor<A extends object> = MakeModelConstructor<Model & ModelAttributes<A>, A>;
+export type ModelAttributes<A extends object> = InferAttrs<A> & {
     readonly $: LinkedModelHash<InferAttrs<A>>;
 };
-export declare type MergeModelConstructors<First extends typeof Model, Second extends typeof Model> = MakeModelConstructor<InstanceType<First> & InstanceType<Second>, First['attributes'] & Second['attributes']>;
-export declare type InferAttrs<A extends object> = {
+export type MergeModelConstructors<First extends typeof Model, Second extends typeof Model> = MakeModelConstructor<InstanceType<First> & InstanceType<Second>, First['attributes'] & Second['attributes']>;
+export type InferAttrs<A extends object> = {
     [K in Exclude<keyof A, typeof metadata | typeof collection>]: Infer<A[K]>;
 };

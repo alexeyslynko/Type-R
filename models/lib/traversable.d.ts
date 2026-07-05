@@ -3,7 +3,7 @@ export interface Traversable {
     getOwner(): Traversable;
     get(key: string): any;
 }
-export declare type ResolveReference = (root: Traversable) => any;
+export type ResolveReference = (root: Traversable) => any;
 export declare class CompiledReference {
     resolve: ResolveReference;
     tail: string;

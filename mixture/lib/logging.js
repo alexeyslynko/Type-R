@@ -14,9 +14,9 @@ var Logger = (function (_super) {
     Logger.prototype.logToConsole = function (level, filter) {
         return this.on(level, function (topic, msg, props) {
             if (!filter || filter.test(topic)) {
-                var args = ["[" + topic + "] " + msg];
+                var args = ["[".concat(topic, "] ").concat(msg)];
                 for (var name_1 in props) {
-                    args.push("\n\t" + name_1 + ":", toString(props[name_1]));
+                    args.push("\n\t".concat(name_1, ":"), toString(props[name_1]));
                 }
                 console[level].apply(console, args);
             }
@@ -25,7 +25,7 @@ var Logger = (function (_super) {
     Logger.prototype.throwOn = function (level, filter) {
         return this.on(level, function (topic, msg, props) {
             if (!filter || filter.test(topic)) {
-                throw new Error("[" + topic + "] " + msg);
+                throw new Error("[".concat(topic, "] ").concat(msg));
             }
         });
     };
@@ -50,7 +50,7 @@ var toString = typeof window === 'undefined' ?
     function (something) {
         if (something && typeof something === 'object') {
             var value = something.__inner_state__ || something, isArray = Array.isArray(value);
-            var body = isArray ? "[ length = " + value.length + " ]" : "{ " + Object.keys(value).join(', ') + " }";
+            var body = isArray ? "[ length = ".concat(value.length, " ]") : "{ ".concat(Object.keys(value).join(', '), " }");
             return something.constructor.name + ' ' + body;
         }
         return JSON.stringify(something);

@@ -29,7 +29,7 @@ function defineSubsetCollection(CollectionClass) {
         }
         Object.defineProperty(SubsetOfCollection.prototype, "__inner_state__", {
             get: function () { return this.refs || this.models; },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         SubsetOfCollection.prototype.add = function (a_elements, options) {
@@ -70,7 +70,7 @@ function defineSubsetCollection(CollectionClass) {
             get: function () {
                 return this.models.length || (this.refs ? this.refs.length : 0);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         SubsetOfCollection.prototype.clone = function (owner) {

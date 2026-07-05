@@ -6,8 +6,8 @@ export function proxyIO(record, options) {
 }
 var ProxyEndpoint = (function () {
     function ProxyEndpoint(record, options) {
-        var _this = this;
         if (options === void 0) { options = {}; }
+        var _this = this;
         this.options = {};
         this.Record = record;
         if (options.createAttrs) {
@@ -29,7 +29,7 @@ var ProxyEndpoint = (function () {
         get: function () {
             return this.Record.prototype._endpoint;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ProxyEndpoint.prototype.subscribe = function (events, target) {

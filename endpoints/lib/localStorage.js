@@ -60,7 +60,7 @@ var LocalStorageEndpoint = (function () {
         set: function (x) {
             localStorage.setItem(this.key, JSON.stringify(x));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     LocalStorageEndpoint.prototype.list = function (options) {

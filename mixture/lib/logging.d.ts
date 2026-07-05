@@ -1,6 +1,6 @@
 import { Messenger } from './events';
-export declare type LogLevel = 'error' | 'warn' | 'debug' | 'info' | 'log';
-export declare type LoggerEventHandler = (topic: string, msg: string, props: object) => void;
+export type LogLevel = 'error' | 'warn' | 'debug' | 'info' | 'log';
+export type LoggerEventHandler = (topic: string, msg: string, props: object) => void;
 export declare const isProduction: boolean, logEvents: LogLevel[];
 export declare class Logger extends Messenger {
     counter: {

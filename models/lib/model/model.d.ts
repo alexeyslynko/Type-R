@@ -20,10 +20,10 @@ export interface ModelDefinition extends TransactionalDefinition {
     collection?: object;
     Collection?: typeof Transactional;
 }
-export declare type LinkedAttributes<M extends {
+export type LinkedAttributes<M extends {
     attributes: object;
 }> = LinkedModelHash<InferAttrs<M['attributes']>>;
-export declare type AttributesMixin<M extends {
+export type AttributesMixin<M extends {
     attributes: object;
 }> = ModelAttributes<M['attributes']>;
 export declare class Model extends Transactional implements IOModel, AttributesContainer, Iterable<any> {
@@ -32,12 +32,12 @@ export declare class Model extends Transactional implements IOModel, AttributesC
     static Collection: CollectionConstructor;
     static DefaultCollection: CollectionConstructor;
     static id: import("./attrDef").ChainableAttributeSpec<StringConstructor>;
-    static readonly ref: import("./attrDef").ChainableAttributeSpec<typeof Model>;
+    static get ref(): import("./attrDef").ChainableAttributeSpec<typeof Model>;
     static extendAttrs<T extends typeof Model, A extends object>(this: T, attrs: A): AnonymousModelConstructor<T['attributes'] & A>;
     static defaults(attrs: AttributesValues): typeof Model;
     static attributes: AttributesValues;
     previousAttributes(): AttributesValues;
-    readonly changed: AttributesValues;
+    get changed(): AttributesValues;
     changedAttributes(diff?: {}): boolean | {};
     hasChanged(key?: string): boolean;
     previous(key: string): any;
@@ -47,7 +47,8 @@ export declare class Model extends Transactional implements IOModel, AttributesC
     clear(options?: any): this;
     getOwner(): Owner;
     idAttribute: string;
-    id: string;
+    get id(): string;
+    set id(x: string);
     Attributes: AttributesConstructor;
     AttributesCopy: AttributesCopyConstructor;
     defaults(values?: {}): {};
@@ -59,7 +60,7 @@ export declare class Model extends Transactional implements IOModel, AttributesC
     toJSON(options?: TransactionOptions): any;
     parse(data: any, options?: TransactionOptions): any;
     deepSet(name: string, value: any, options?: any): this;
-    readonly collection: any;
+    get collection(): any;
     dispose(): void;
     getClassName(): string;
     forceAttributeChange: (key: string, options: TransactionOptions) => void;

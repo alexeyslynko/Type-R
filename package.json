@@ -13,7 +13,7 @@
     ],
     "scripts": {
         "build": "yarn && yarn build:all && yarn test",
-        "build:all": "yarn workspaces run build",
+        "build:all": "yarn workspace @type-r/mixture build && yarn workspace @type-r/models build && yarn workspace @type-r/ext-types build && yarn workspace @type-r/globals build && yarn workspace @type-r/endpoints build && yarn workspace @type-r/react build && yarn workspace @type-r/tests build && yarn workspace @type-r/docs build",
         "test": "yarn workspace @type-r/tests test"
     },
     "devDependencies": {
@@ -24,6 +24,6 @@
         "rollup-plugin-paths": "*",
         "rollup-plugin-sourcemaps": "*",
         "rollup-plugin-uglify": "*",
-        "typescript": "~3.6.0"
+        "typescript": "6.0.3"
     }
 }

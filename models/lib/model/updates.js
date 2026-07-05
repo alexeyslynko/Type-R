@@ -58,7 +58,7 @@ export var UpdateModelMixin = {
                 }
                 else {
                     unknown || (unknown = []);
-                    unknown.push("'" + name_1 + "'");
+                    unknown.push("'".concat(name_1, "'"));
                 }
             }
             if (unknown) {
@@ -76,18 +76,18 @@ export var UpdateModelMixin = {
     }
 };
 export function unknownAttrsWarning(record, unknown, props, options) {
-    record._log('warn', 'Type-R:UnknownAttrs', "undefined attributes " + unknown.join(', ') + " are ignored.", props, options.logger);
+    record._log('warn', 'Type-R:UnknownAttrs', "undefined attributes ".concat(unknown.join(', '), " are ignored."), props, options.logger);
 }
 export function constructorsMixin(attrDefs) {
     var attrs = Object.keys(attrDefs);
-    var AttributesCopy = new Function('values', "\n        " + attrs.map(function (attr) { return "\n            this." + attr + " = values." + attr + ";\n        "; }).join('') + "\n    ");
+    var AttributesCopy = new Function('values', "\n        ".concat(attrs.map(function (attr) { return "\n            this.".concat(attr, " = values.").concat(attr, ";\n        "); }).join(''), "\n    "));
     AttributesCopy.prototype = Object.prototype;
-    var Attributes = new Function('record', 'values', 'options', "\n        var _attrs = record._attributes;\n\n        " + attrs.map(function (attr) { return "\n            this." + attr + " = _attrs." + attr + ".doInit( values." + attr + ", record, options );\n        "; }).join('') + "\n    ");
+    var Attributes = new Function('record', 'values', 'options', "\n        var _attrs = record._attributes;\n\n        ".concat(attrs.map(function (attr) { return "\n            this.".concat(attr, " = _attrs.").concat(attr, ".doInit( values.").concat(attr, ", record, options );\n        "); }).join(''), "\n    "));
     Attributes.prototype = Object.prototype;
     return { Attributes: Attributes, AttributesCopy: AttributesCopy };
 }
 export function shouldBeAnObject(record, values, options) {
-    if (values && values.constructor === Object)
+    if (Object.prototype.toString.call(values) === '[object Object]')
         return true;
     record._log('error', 'Type-R:InvalidObject', 'update with non-object is ignored!', { values: values }, options.logger);
     return false;

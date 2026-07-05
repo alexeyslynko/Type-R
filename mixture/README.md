@@ -116,7 +116,7 @@ The complete semantic if Backbone v1.1.x Events is supported with the following 
 `Events` is a [mixin](#mixins) giving the object the ability to bind and trigger custom named events.
 
 ```javascript
-import { mixins, Events } from 'type-r'
+import { mixins, Events } from '@type-r/mixture'
 
 @mixins( Events )
 class EventfulClass {
@@ -247,7 +247,7 @@ change | (model, options) | The model is changed inside of collection.
 Messenger is an abstract base class implementing Events mixin and some convenience methods.
 
 ```javascript
-import { define, Messenger } from 'type-r'
+import { define, Messenger } from '@type-r/mixture'
 
 class MyMessenger extends Messenger {
 

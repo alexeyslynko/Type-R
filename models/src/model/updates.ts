@@ -197,7 +197,7 @@ export function constructorsMixin( attrDefs : AttributesDescriptors ) : Construc
 }
 
 export function shouldBeAnObject( record : AttributesContainer, values : object, options ){
-    if( values && values.constructor === Object ) return true;
+    if( Object.prototype.toString.call( values ) === '[object Object]' ) return true;
 
     record._log( 'error', 'Type-R:InvalidObject', 'update with non-object is ignored!', { values }, options.logger );
     return false;

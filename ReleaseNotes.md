@@ -72,14 +72,14 @@ construct from object/array | - | `RecordOrCollectionClass.from( json, options? 
 
 Starting from version 3.X, Type-R does not modify built-in global JS objects. New `type(T)` attribute definition notation is introduced to replace `T.has.`
 
-There's `type-r/globals` package for compatibility with version 2.x which must be imported once with `import 'type-r/globals'`.
+There's `@type-r/globals` package for compatibility with version 2.x which must be imported once with `import '@type-r/globals'`.
 If this package is not used, the code must be refactored according to the rules below.
 
 | 2.x | 3.x
  -|-|-
-UNIX Timestamp | `Date.timestamp` | `import { Timestamp } from 'type-r/ext-types'`
-Microsoft date | `Date.microsoft` | `import { MicrosoftDate } from 'type-r/ext-types'`
-Integer | `Integer` and `Number.integer` | `import { Integer } from 'type-r/ext-types'`
+UNIX Timestamp | `Date.timestamp` | `import { Timestamp } from '@type-r/ext-types'`
+Microsoft date | `Date.microsoft` | `import { MicrosoftDate } from '@type-r/ext-types'`
+Integer | `Integer` and `Number.integer` | `import { Integer } from '@type-r/ext-types'`
 Create metatype from constructor | `Ctor.has` | `type(Ctor)`
 Typed attribute with default value | `Ctor.value(default)` | `type(Ctor).value(default)`
 Attribute "Required" check | `Ctor.isRequired` | `type(Ctor).required`

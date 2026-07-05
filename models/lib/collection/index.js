@@ -85,7 +85,7 @@ var Collection = (function (_super) {
     };
     Object.defineProperty(Collection.prototype, "__inner_state__", {
         get: function () { return this.models; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Collection.prototype, "comparator", {
@@ -118,7 +118,7 @@ var Collection = (function (_super) {
                     this._comparator = null;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Collection.prototype.getStore = function () {
@@ -327,7 +327,7 @@ var Collection = (function (_super) {
         return next;
     };
     Collection.prototype._log = function (level, topic, text, value, a_logger) {
-        (a_logger || logger).trigger(level, topic, this.model.prototype.getClassName() + "." + this.getClassName() + ": " + text, {
+        (a_logger || logger).trigger(level, topic, "".concat(this.model.prototype.getClassName(), ".").concat(this.getClassName(), ": ") + text, {
             Argument: value,
             'Attributes spec': this.model.prototype._attributes
         });
@@ -337,7 +337,7 @@ var Collection = (function (_super) {
     };
     Object.defineProperty(Collection.prototype, "length", {
         get: function () { return this.models.length; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Collection.prototype.push = function (model, options) {

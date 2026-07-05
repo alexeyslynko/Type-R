@@ -15,7 +15,7 @@ describe( 'Serialization', () =>{
     @define class X extends Record {
         @auto num : number
         @auto date : Date
-        @type( Number ).required.as rq : number
+        @( type( Number ).required.as ) rq : number
     } 
 
     it( 'Restore Record from JSON', () =>{
@@ -73,11 +73,11 @@ describe( 'Record', () =>{
 
         describe( '...as constructors', () =>{
             @define class M extends Record {
-                @type( String ).as s : string
-                @type( Number ).as n : number
-                @type( Boolean ).as b : boolean
-                @type( Object ).as o : object
-                @type( Array ).as a : any[]
+                @( type( String ).as ) s : string
+                @( type( Number ).as ) n : number
+                @( type( Boolean ).as ) b : boolean
+                @( type( Object ).as ) o : object
+                @( type( Array ).as ) a : any[]
                 @auto d : Date
             }
 

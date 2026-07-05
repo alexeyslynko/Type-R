@@ -26,21 +26,21 @@ var ChainableAttributeSpec = (function () {
         get: function () {
             return definitionDecorator('attributes', this);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChainableAttributeSpec.prototype, "isRequired", {
         get: function () {
             return this.required;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChainableAttributeSpec.prototype, "required", {
         get: function () {
             return this.metadata({ isRequired: true });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ChainableAttributeSpec.prototype.endpoint = function (endpoint) {
@@ -61,14 +61,14 @@ var ChainableAttributeSpec = (function () {
         get: function () {
             return this.toJSON(false);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChainableAttributeSpec.prototype, "null", {
         get: function () {
             return this.value(null);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ChainableAttributeSpec.prototype.get = function (fun) {
@@ -105,7 +105,7 @@ var ChainableAttributeSpec = (function () {
         get: function () {
             return this;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ChainableAttributeSpec.prototype.metadata = function (options) {

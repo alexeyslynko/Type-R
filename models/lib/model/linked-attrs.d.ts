@@ -1,7 +1,7 @@
 import { Model } from './model';
 import { Linked } from '@linked/value';
 export declare function addAttributeLinks(Class: typeof Model): void;
-export declare type LinkedModelHash<T extends object> = {
+export type LinkedModelHash<T extends object> = {
     readonly [K in keyof T]: LinkedAttr<T[K]>;
 };
 export declare class LinkedAttr<T> extends Linked<T> {
@@ -11,6 +11,5 @@ export declare class LinkedAttr<T> extends Linked<T> {
     constructor(model: Model, attr: string, value: any, _token: any);
     set(x: T): void;
     _error: any;
-    error: any;
-    readonly descriptor: import("./metatypes").AnyType;
+    get descriptor(): import("./metatypes").AnyType;
 }

@@ -13,7 +13,7 @@ var RestfulEndpoint = (function () {
         this.fetchOptions = fetchOptions;
         this.memoryIO = mockData && !isProduction ? memoryIO(mockData, simulateDelay) : null;
         if (mockData && isProduction) {
-            log('error', 'Type-R:RestfulIO', "Mock data is used in production for " + url);
+            log('error', 'Type-R:RestfulIO', "Mock data is used in production for ".concat(url));
         }
     }
     RestfulEndpoint.prototype.create = function (json, options, model) {
@@ -51,7 +51,7 @@ var RestfulEndpoint = (function () {
     RestfulEndpoint.prototype.simulateIO = function (method, httpMethod, url, args) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                log(isProduction ? "error" : "info", 'Type-R:SimulatedIO', httpMethod + " " + url);
+                log(isProduction ? "error" : "info", 'Type-R:SimulatedIO', "".concat(httpMethod, " ").concat(url));
                 return [2, this.memoryIO[method].apply(this.memoryIO, args)];
             });
         });
@@ -84,7 +84,7 @@ var RestfulEndpoint = (function () {
         return fetch(url, this.buildRequestOptions(method, options, body))
             .then(function (response) {
             if (response.ok) {
-                return response.json();
+                return response.text().then(function (text) { return text ? JSON.parse(text) : null; });
             }
             else {
                 throw new Error(response.statusText);

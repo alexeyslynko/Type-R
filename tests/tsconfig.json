@@ -2,7 +2,9 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "es6",
+    "rootDir": ".",
     "emitDecoratorMetadata": true,
+    "types": [ "jest" ],
     "outDir": "./lib",
   },
   "include":[

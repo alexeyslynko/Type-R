@@ -8,9 +8,9 @@ describe( 'Bugs from Volicon Observer', () =>{
     describe( 'Attribute serialization', () => {
         it( 'should call has.parse() when null attribute value is passed', ()=>{
             @define class Test extends Record {
-                @type( String )
+                @( type( String )
                     .parse( x => 'bla-bla' )
-                    .as a : string
+                    .as ) a : string
             }
     
             const t = new Test({ a : null }, { parse : true });
@@ -21,8 +21,8 @@ describe( 'Bugs from Volicon Observer', () =>{
     describe( 'Attribute definitions', () => {
         it( '@value( value ) must work as expected', () => {
             @define class Test extends Record {
-                @value( 5 ).as num : number;
-                @value( "5" ).as str : string;
+                @( value( 5 ).as ) num : number;
+                @( value( "5" ).as ) str : string;
             }
 
             const t = new Test();
@@ -57,19 +57,19 @@ describe( 'Bugs from Volicon Observer', () =>{
             let calls = [];
 
             @define class Base extends Record {
-                @type( String ).watcher( x => calls.push( 'inherited' ) ).as
+                @( type( String ).watcher( x => calls.push( 'inherited' ) ).as )
                 inherited : string;
 
-                @type( String ).watcher( 'onNamedWatcher' ).as namedWatcher : string;
+                @( type( String ).watcher( 'onNamedWatcher' ).as ) namedWatcher : string;
 
-                @type( String ).watcher( x => calls.push( 'base' ) ).as overriden : string;
+                @( type( String ).watcher( x => calls.push( 'base' ) ).as ) overriden : string;
             }
 
             @define class Subclass extends Base {
-                @type( String ).watcher( x => calls.push( 'added' ) ).as
+                @( type( String ).watcher( x => calls.push( 'added' ) ).as )
                 added : string;
 
-                @type( String ).watcher( x => calls.push( 'subclass') ).as
+                @( type( String ).watcher( x => calls.push( 'subclass') ).as )
                 overriden : string;
 
                 onNamedWatcher(){

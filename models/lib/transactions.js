@@ -82,7 +82,7 @@ var Transactional = (function () {
         var obj = this.create(json, __assign(__assign({}, options), { logger: strict ? throwingLogger : void 0 }));
         if (strict && obj.validationError) {
             obj.eachValidationError(function (error, key, obj) {
-                throw new Error(obj.getClassName() + "." + key + ": " + error);
+                throw new Error("".concat(obj.getClassName(), ".").concat(key, ": ").concat(error));
             });
         }
         return obj;
@@ -107,7 +107,7 @@ var Transactional = (function () {
             var error = this._validationError || (this._validationError = new ValidationError(this));
             return error.length ? error : null;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Transactional.prototype.validate = function (obj) { };

@@ -3,6 +3,7 @@
     "target": "es5",
     "lib" : [ "es2015", "dom" ],
     "module":"es6",
+    "ignoreDeprecations": "6.0",
     "stripInternal": true,
     "declaration": true,
     "importHelpers": true,
@@ -10,7 +11,11 @@
     "sourceMap": true,
     "outDir": "./lib",
     "esModuleInterop": true,
+    "useDefineForClassFields": false,
+    "strict": false,
     "noImplicitAny": false,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false,
     "removeComments":true,
     "experimentalDecorators": true
   }

@@ -3,8 +3,8 @@
   "name": "todomvc",
   "version": "1.0.0",
   "dependencies": {
-    "@type-r/models": "^4.0.0",
-    "@type-r/react": "^4.0.0",
+    "@type-r/models": "^4.1.0",
+    "@type-r/react": "^4.1.0",
     "classnames": "^2.2.6",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",

@@ -20,7 +20,7 @@ var AnyType = (function () {
             this.defaultValue = this.create;
         }
         else if (tools.isValidJSON(value)) {
-            this.defaultValue = new Function("return " + JSON.stringify(value) + ";");
+            this.defaultValue = new Function("return ".concat(JSON.stringify(value), ";"));
         }
         else {
             this.defaultValue = this.defaultValue;
@@ -106,7 +106,7 @@ var AnyType = (function () {
         return false;
     };
     AnyType.prototype._log = function (level, code, text, value, record, logger) {
-        record._log(level, code, record.getClassName() + "." + this.name + " " + text, {
+        record._log(level, code, "".concat(record.getClassName(), ".").concat(this.name, " ").concat(text), {
             'New value': value,
             'Prev. value': record.attributes[this.name]
         }, logger);

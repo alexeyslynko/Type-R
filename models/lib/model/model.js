@@ -40,7 +40,7 @@ var Model = (function (_super) {
                 return _a = {}, _a[_this.prototype.idAttribute] = x, _a;
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Model.extendAttrs = function (attrs) {
@@ -53,13 +53,13 @@ var Model = (function (_super) {
         get: function () {
             return this._attributes$ || (this._attributes$ = new this.__Attributes$(this));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Model.prototype.previousAttributes = function () { return new this.AttributesCopy(this._previousAttributes); };
     Object.defineProperty(Model.prototype, "__inner_state__", {
         get: function () { return this.attributes; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Model.prototype, "changed", {
@@ -80,7 +80,7 @@ var Model = (function (_super) {
             }
             return changed;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Model.prototype.changedAttributes = function (diff) {
@@ -137,7 +137,7 @@ var Model = (function (_super) {
     Object.defineProperty(Model.prototype, "id", {
         get: function () { return this.attributes[this.idAttribute]; },
         set: function (x) { setAttribute(this, this.idAttribute, x); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Model.prototype.defaults = function (values) {
@@ -233,7 +233,7 @@ var Model = (function (_super) {
         get: function () {
             return this._ownerKey ? null : this._owner;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Model.prototype.dispose = function () {
@@ -322,7 +322,7 @@ function typeCheck(record, values, options) {
         for (var name_3 in values) {
             if (!_attributes[name_3]) {
                 unknown || (unknown = []);
-                unknown.push("'" + name_3 + "'");
+                unknown.push("'".concat(name_3, "'"));
             }
         }
         if (unknown) {
