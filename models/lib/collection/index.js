@@ -1,7 +1,7 @@
 import { __assign, __decorate, __extends } from "tslib";
 import { Linked } from '@linked/value';
 import { define, definitions, EventMap, eventsApi, logger, Mixable, mixinRules, mixins } from '@type-r/mixture';
-import { startIO } from '../io-tools';
+import { createIOPromise, startIO } from '../io-tools';
 import { AggregatedType, Model, SharedType, shared, attributes } from '../model';
 import { ItemsBehavior, Transactional, transactionApi } from '../transactions';
 import { addTransaction } from './add';
@@ -199,15 +199,7 @@ var Collection = (function (_super) {
     Collection.prototype.liveUpdates = function (enabled) {
         var _this = this;
         if (enabled) {
-            this.liveUpdates(false);
-            var filter_1 = typeof enabled === 'function' ? enabled : function () { return true; };
-            this._liveUpdates = {
-                updated: function (json) {
-                    filter_1(json) && _this.add(json, { parse: true, merge: true });
-                },
-                removed: function (id) { return _this.remove(id); }
-            };
-            return this.getEndpoint().subscribe(this._liveUpdates, this).then(function () { return _this; });
+            return this._subscribeLiveUpdates(enabled).then(function () { return _this; });
         }
         else {
             if (this._liveUpdates) {
@@ -216,17 +208,44 @@ var Collection = (function (_super) {
             }
         }
     };
+    Collection.prototype._subscribeLiveUpdates = function (enabled) {
+        var _this = this;
+        this.liveUpdates(false);
+        var filter = typeof enabled === 'function' ? enabled : function () { return true; };
+        this._liveUpdates = {
+            updated: function (json) {
+                filter(json) && _this.add(json, { parse: true, merge: true });
+            },
+            removed: function (id) { return _this.remove(id); }
+        };
+        return this.getEndpoint().subscribe(this._liveUpdates, this);
+    };
     Collection.prototype.fetch = function (a_options) {
         var _this = this;
         if (a_options === void 0) { a_options = {}; }
         var options = __assign({ parse: true }, a_options), endpoint = this.getEndpoint();
-        return startIO(this, endpoint.list(options, this), options, function (json) {
-            var result = _this.set(json, __assign({ parse: true, ioMethod: 'fetch' }, options));
-            if (options.liveUpdates) {
-                result = _this.liveUpdates(options.liveUpdates);
-            }
-            return result;
-        });
+        var promise = options.liveUpdates ?
+            createIOPromise(function (resolve, reject, onAbort) {
+                var list;
+                var subscription = _this._subscribeLiveUpdates(options.liveUpdates);
+                subscription
+                    .then(function () {
+                    list = endpoint.list(options, _this);
+                    return list;
+                })
+                    .then(resolve, function (error) {
+                    _this.liveUpdates(false);
+                    reject(error);
+                });
+                onAbort(function (resolve, reject) {
+                    list && list.abort && list.abort();
+                    subscription.abort && subscription.abort();
+                    _this.liveUpdates(false);
+                    reject(new Error('I/O Aborted'));
+                });
+            }) :
+            endpoint.list(options, this);
+        return startIO(this, promise, options, function (json) { return _this.set(json, __assign({ parse: true, ioMethod: 'fetch' }, options)); });
     };
     Collection.prototype.dispose = function () {
         if (this._disposed)

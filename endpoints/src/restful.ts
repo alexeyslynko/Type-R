@@ -1,5 +1,6 @@
 import { IOEndpoint, IOOptions, Model, Collection, log, isProduction, Transactional } from '@type-r/models'
 import { memoryIO, MemoryEndpoint } from './memory'
+import { WebSocketEndpoint, WebSocketEndpointOptions } from './websocket'
 
 export type UrlTemplate = ( options : any, model? : any ) => string
 
@@ -9,11 +10,21 @@ export function create( url : string | UrlTemplate, fetchOptions? : Partial<Rest
 
 export { create as restfulIO }
 
+export function restfulWebsocketIO(
+    url : string | UrlTemplate,
+    websocketUrl : string,
+    options : RestfulWebSocketEndpointOptions = {}
+){
+    return new RestfulWebSocketEndpoint( url, websocketUrl, options );
+}
+
 export type HttpMethod = 'GET' | 'POST' | 'UPDATE' | 'DELETE' | 'PUT'
 
 export interface RestfulIOOptions extends IOOptions {
     params? : object,
     options? : RequestInit
+    idempotencyKey? : string
+    expectedVersion? : string | number
 }
 
 export type RestfulFetchOptions = /* subset of RequestInit */{
@@ -25,6 +36,8 @@ export type RestfulFetchOptions = /* subset of RequestInit */{
     mockData? : any
     simulateDelay? : number 
 }
+
+export type RestfulWebSocketEndpointOptions = Partial<RestfulFetchOptions> & WebSocketEndpointOptions
 
 export class RestfulEndpoint implements IOEndpoint {
     constructor( public url : string | UrlTemplate, { mockData, simulateDelay = 1000, ...fetchOptions } : RestfulFetchOptions = {}) {
@@ -127,8 +140,21 @@ export class RestfulEndpoint implements IOEndpoint {
         return resultOptions;
     }
 
-    protected request( method : HttpMethod, url : string, {options} : RestfulIOOptions, body? ) : Promise<any> {
-        return fetch( url, this.buildRequestOptions( method, options, body ) )
+    protected request( method : HttpMethod, url : string, ioOptions : RestfulIOOptions, body? ) : Promise<any> {
+        const { options, idempotencyKey, expectedVersion } = ioOptions,
+            headers : HeadersInit = {
+                ...( options && options.headers as object )
+            };
+
+        if( idempotencyKey !== void 0 ) {
+            headers[ 'Idempotency-Key' ] = idempotencyKey;
+        }
+
+        if( expectedVersion !== void 0 ) {
+            headers[ 'If-Match' ] = String( expectedVersion );
+        }
+
+        return fetch( url, this.buildRequestOptions( method, { ...options, headers }, body ) )
             .then( response => response.text()
                 .then( text => {
                     if( response.ok ) {
@@ -139,6 +165,49 @@ export class RestfulEndpoint implements IOEndpoint {
                 } )
             );
     }
+}
+
+export class RestfulWebSocketEndpoint implements IOEndpoint {
+    restful : RestfulEndpoint
+    websocket : WebSocketEndpoint
+
+    constructor(
+        url : string | UrlTemplate,
+        websocketUrl : string,
+        public options : RestfulWebSocketEndpointOptions = {}
+    ){
+        this.restful = new RestfulEndpoint( url, options );
+        this.websocket = new WebSocketEndpoint( websocketUrl, options );
+    }
+
+    create( json, options : RestfulIOOptions, model ) {
+        return this.restful.create( json, options, model );
+    }
+
+    update( id, json, options : RestfulIOOptions, model ) {
+        return this.restful.update( id, json, options, model );
+    }
+
+    read( id, options : IOOptions, model ){
+        return this.restful.read( id, options, model );
+    }
+
+    destroy( id, options : RestfulIOOptions, model ){
+        return this.restful.destroy( id, options, model );
+    }
+
+    list( options : RestfulIOOptions, collection ) {
+        return this.restful.list( options, collection );
+    }
+
+    subscribe( events, collection? ) {
+        return this.websocket.subscribe( events, collection );
+    }
+
+    unsubscribe( events, collection? ) {
+        return this.websocket.unsubscribe( events, collection );
+    }
+
 }
 
 function getErrorMessage( response : Response, text : string ) {

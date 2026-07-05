@@ -1,10 +1,15 @@
 import { __assign, __awaiter, __generator, __rest } from "tslib";
 import { Model, log, isProduction } from '@type-r/models';
 import { memoryIO } from './memory';
+import { WebSocketEndpoint } from './websocket';
 export function create(url, fetchOptions) {
     return new RestfulEndpoint(url, fetchOptions);
 }
 export { create as restfulIO };
+export function restfulWebsocketIO(url, websocketUrl, options) {
+    if (options === void 0) { options = {}; }
+    return new RestfulWebSocketEndpoint(url, websocketUrl, options);
+}
 var RestfulEndpoint = (function () {
     function RestfulEndpoint(url, _a) {
         if (_a === void 0) { _a = {}; }
@@ -79,9 +84,15 @@ var RestfulEndpoint = (function () {
         }
         return resultOptions;
     };
-    RestfulEndpoint.prototype.request = function (method, url, _a, body) {
-        var options = _a.options;
-        return fetch(url, this.buildRequestOptions(method, options, body))
+    RestfulEndpoint.prototype.request = function (method, url, ioOptions, body) {
+        var options = ioOptions.options, idempotencyKey = ioOptions.idempotencyKey, expectedVersion = ioOptions.expectedVersion, headers = __assign({}, (options && options.headers));
+        if (idempotencyKey !== void 0) {
+            headers['Idempotency-Key'] = idempotencyKey;
+        }
+        if (expectedVersion !== void 0) {
+            headers['If-Match'] = String(expectedVersion);
+        }
+        return fetch(url, this.buildRequestOptions(method, __assign(__assign({}, options), { headers: headers }), body))
             .then(function (response) { return response.text()
             .then(function (text) {
             if (response.ok) {
@@ -99,6 +110,37 @@ var RestfulEndpoint = (function () {
     return RestfulEndpoint;
 }());
 export { RestfulEndpoint };
+var RestfulWebSocketEndpoint = (function () {
+    function RestfulWebSocketEndpoint(url, websocketUrl, options) {
+        if (options === void 0) { options = {}; }
+        this.options = options;
+        this.restful = new RestfulEndpoint(url, options);
+        this.websocket = new WebSocketEndpoint(websocketUrl, options);
+    }
+    RestfulWebSocketEndpoint.prototype.create = function (json, options, model) {
+        return this.restful.create(json, options, model);
+    };
+    RestfulWebSocketEndpoint.prototype.update = function (id, json, options, model) {
+        return this.restful.update(id, json, options, model);
+    };
+    RestfulWebSocketEndpoint.prototype.read = function (id, options, model) {
+        return this.restful.read(id, options, model);
+    };
+    RestfulWebSocketEndpoint.prototype.destroy = function (id, options, model) {
+        return this.restful.destroy(id, options, model);
+    };
+    RestfulWebSocketEndpoint.prototype.list = function (options, collection) {
+        return this.restful.list(options, collection);
+    };
+    RestfulWebSocketEndpoint.prototype.subscribe = function (events, collection) {
+        return this.websocket.subscribe(events, collection);
+    };
+    RestfulWebSocketEndpoint.prototype.unsubscribe = function (events, collection) {
+        return this.websocket.unsubscribe(events, collection);
+    };
+    return RestfulWebSocketEndpoint;
+}());
+export { RestfulWebSocketEndpoint };
 function getErrorMessage(response, text) {
     var defaultMessage = response.statusText || "HTTP ".concat(response.status);
     if (text) {

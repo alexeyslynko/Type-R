@@ -1,6 +1,6 @@
 import { Linked } from '@linked/value';
 import { define, definitions, EventMap, eventsApi, EventsDefinition, Logger, logger, LogLevel, Mixable, mixinRules, mixins, TheType } from '@type-r/mixture';
-import { IOPromise, startIO } from '../io-tools';
+import { createIOPromise, IOPromise, startIO } from '../io-tools';
 import { AggregatedType, Model, SharedType, shared, AnonymousModelConstructor, attributes } from '../model';
 import { CloneOptions, ItemsBehavior, Transactional, TransactionalDefinition, transactionApi, TransactionOptions } from '../transactions';
 import { AddOptions, addTransaction } from './add';
@@ -330,19 +330,7 @@ export class Collection< R extends Model = Model> extends Transactional implemen
      */
     liveUpdates( enabled : LiveUpdatesOption ) : IOPromise<this> {
         if( enabled ){
-            this.liveUpdates( false );
-
-            const filter = typeof enabled === 'function' ? enabled : () => true;
-
-            this._liveUpdates = {
-                updated : json => {
-                    filter( json ) && this.add( json, { parse : true, merge : true } );
-                },
-
-                removed : id => this.remove( id )
-            };
-
-            return this.getEndpoint().subscribe( this._liveUpdates, this ).then( () => this );
+            return this._subscribeLiveUpdates( enabled ).then( () => this );
         }
         else{
             if( this._liveUpdates ){
@@ -357,24 +345,57 @@ export class Collection< R extends Model = Model> extends Transactional implemen
     /** @internal */
     _liveUpdates : object
 
+    /** @internal */
+    _subscribeLiveUpdates( enabled : LiveUpdatesOption ) : IOPromise<any> {
+        this.liveUpdates( false );
+
+        const filter = typeof enabled === 'function' ? enabled : () => true;
+
+        this._liveUpdates = {
+            updated : json => {
+                filter( json ) && this.add( json, { parse : true, merge : true } );
+            },
+
+            removed : id => this.remove( id )
+        };
+
+        return this.getEndpoint().subscribe( this._liveUpdates, this );
+    }
+
     fetch( a_options : { liveUpdates? : LiveUpdatesOption } & TransactionOptions & { [ key : string ] : any } = {} ) : IOPromise<this> {
         const options = { parse : true, ...a_options },
             endpoint = this.getEndpoint();
 
+        const promise = options.liveUpdates ?
+            createIOPromise( ( resolve, reject, onAbort ) => {
+                let list : IOPromise<any>;
+                const subscription = this._subscribeLiveUpdates( options.liveUpdates );
+
+                subscription
+                    .then( () => {
+                        list = endpoint.list( options, this );
+                        return list;
+                    })
+                    .then( resolve, error => {
+                        this.liveUpdates( false );
+                        reject( error );
+                    });
+
+                onAbort( ( resolve, reject ) => {
+                    list && list.abort && list.abort();
+                    subscription.abort && subscription.abort();
+                    this.liveUpdates( false );
+                    reject( new Error( 'I/O Aborted' ) );
+                });
+            }) :
+            endpoint.list( options, this );
+
         return startIO(
             this,
-            endpoint.list( options, this ),
+            promise,
             options,
 
-            json => {
-                let result : any = this.set( json, { parse : true, ioMethod : 'fetch', ...options } as TransactionOptions );
-                
-                if( options.liveUpdates ){
-                    result = this.liveUpdates( options.liveUpdates );
-                }
-
-                return result;
-            }
+            json => this.set( json, { parse : true, ioMethod : 'fetch', ...options } as TransactionOptions )
         );
     }
 
