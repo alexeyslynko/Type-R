@@ -108,7 +108,7 @@ const roles = new Role.Collection( json, { parse : true } );
 
     // Type-R cannot infer a Collection metatype from the TypeScript type automatically.
     // Full attribute type annotation is required.
-    @type( Role.Collection ).as roles : Collection<User>
+    @( type( Role.Collection ).as ) roles : Collection<User>
 }
 ```
 
@@ -172,12 +172,12 @@ Must have a reference to the master collection which is used to resolve record i
     static Collection : CollectionConstructor<User>
 
     @auto name : string
-    @subsetOf('store.roles').as roles : Collection<Role>
+    @( subsetOf('store.roles').as ) roles : Collection<Role>
 }
 
 @define class UsersDirectory extends Store {
-    @type(Role.Collection).as roles : Collection<Role>,
-    @type(User.Collection).as users : Collection<User> // <- `store.roles` references will be resolved against this.roles
+    @( type(Role.Collection).as ) roles : Collection<Role>
+    @( type(User.Collection).as ) users : Collection<User> // <- `store.roles` references will be resolved against this.roles
 }
 ```
 

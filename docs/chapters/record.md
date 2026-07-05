@@ -46,16 +46,16 @@ import "reflect-metadata" // Required for @auto without arguments
     @auto(null) updatedAt : Date 
 
     // You have to pass the type explicitly if reflect-metadata is not used.
-    @type(String).as email : string
+    @( type(String).as ) email : string
 
     // Or, you can tell Type-R to infer type from the default value.
-    @value('').as email2 : string
+    @( value('').as ) email2 : string
 
     // Type cannot be inferred from null default values, and needs to be specified explicitly
-    @type(String).value(null).as email3 : string 
+    @( type(String).value(null).as ) email3 : string 
         
     // You can attach ⤹ metadata to fine-tune attribute's behavior
-    @type(Date).toJSON(false).as
+    @( type(Date).toJSON(false).as )
         lastLogin : Date// ⟵ not serializable
 }
 
@@ -109,16 +109,16 @@ Record's attributes definition. Lists attribute names along with their types, de
 // You should not use `static attributes` in TypeScript. Use decorators instead.
 @define class User extends Record {
     // Complete form of an attribute definition.
-    @type( String ).value( 'John Dow' ).as name : string,
+    @( type( String ).value( 'John Dow' ).as ) name : string
 
     // Attribute type is inferred from the default value.
-    @value( 'john.dow@mail.com' ).as email : string , // Same as @type( String ).value( 'john.dow@mail.com' ).as
+    @( value( 'john.dow@mail.com' ).as ) email : string // Same as @( type( String ).value( 'john.dow@mail.com' ).as )
 
     // Attribute type is inferred from the TypeScript type declaration.
-    @auto address : string, // Same as @type( String ).value( '' )
+    @auto address : string // Same as type( String ).value( '' )
 
     // Same as above, but with a custom default value.
-    @auto( 'john.dow@mail.com' ) email2 : string // Same as @value( 'john.dow@mail.com' ).as
+    @auto( 'john.dow@mail.com' ) email2 : string // Same as @( value( 'john.dow@mail.com' ).as )
 }
 
 ```
@@ -177,7 +177,7 @@ Constructor function is the simplest form of attribute definition. Any construct
     @auto createdAt : Date // Date attribute
 
     // Or, it can be specified explicitly with @type decorator.
-    @type( Date ).as updatedAt : Date // Date attribute
+    @( type( Date ).as ) updatedAt : Date // Date attribute
     ...
 }
 ```
@@ -202,8 +202,8 @@ Use the general form of attribute definition in such cases: `value( theFunction 
 ```typescript
 // In typescript, @value decorator will extract constructor function from the default value.
 @define class GridColumn extends Record {
-    @value( '' ).as name : string // String attribute which is '' by default.
-    @value( x => x ).as render : Function
+    @( value( '' ).as ) name : string // String attribute which is '' by default.
+    @( value( x => x ).as ) render : Function
     ...
 }
 ```
@@ -223,10 +223,10 @@ Declare an attribute with type T having the custom `defaultValue`.
 
 ```typescript
 @define class Person extends Record {
-    @type( String ).value( null ).as phone : string // String attribute which is null by default.
+    @( type( String ).value( null ).as ) phone : string // String attribute which is null by default.
 
     // There's an easy way of doing that in TypeScript.
-    @auto( null ).as phone : string
+    @auto( null ) phone : string
     ...
 }
 ```
@@ -246,7 +246,7 @@ There are other popular Date serialization options available in `type-r/ext-type
 @define class Person extends Record {
     @auto justDate : Date
     // MicrosoftDate is an attribute metatype, not a real type, so you must pass it explictly.
-    @type( Timestamp ).as createdAt : Date
+    @( type( Timestamp ).as ) createdAt : Date
     ...
 }
 ```
@@ -302,7 +302,7 @@ import { define, type, Record }
 import { define, type, Record }
 
 @define class Dummy extends Record {
-    @type( String ).value( "a" ).as a : string
+    @( type( String ).value( "a" ).as ) a : string
 }
 ```
 
@@ -326,16 +326,16 @@ import { define, auto, Record } from 'type-r'
 }
 ```
 
-### `decorator` @`attrDef`.as
+### `decorator` @(`attrDef`.as)
 
-Attribute definition creates the TypeScript property decorator when being appended with `.as` suffix. It's an alternative syntax to `@auto`.
+Attribute definition creates the TypeScript property decorator when being appended with `.as` suffix. With TypeScript 6 and newer, chained decorator expressions must be wrapped in parentheses: `@( type( T ).as ) prop : T`. It's an alternative syntax to `@auto`.
 
 ```typescript
 import { define, type, Record } from 'type-r'
 
 @define class User extends Record {
-    @value( "5" ).as name : string
-    @type( String ).toJSON( false ).as email : string
+    @( value( "5" ).as ) name : string
+    @( type( String ).toJSON( false ).as ) email : string
 }
 ```
 
@@ -614,8 +614,8 @@ All changes in shared records or collections are detected and cause change event
 
 ```typescript
 @define class UsersListState extends Record {
-    @type( User.Collection ).as users : Collection<User>,
-    @shared( User ).as selected : User // Can be assigned with the user from this.users
+    @( type( User.Collection ).as ) users : Collection<User>
+    @( shared( User ).as ) selected : User // Can be assigned with the user from this.users
 }
 ```
 
@@ -641,10 +641,10 @@ All changes in the collection and its elements are detected and cause change eve
 ```typescript
     @define class MyRecord extends Record {
         // Reference to the _shared collection_ object.
-        @shared( SomeCollection ).as notCloned : Collection<Some>
+        @( shared( SomeCollection ).as ) notCloned : Collection<Some>
 
         // _Aggregated_ collection of references to the _shared records_.
-        @type( SomeCollection.Refs ).as cloned : SomeCollection
+        @( type( SomeCollection.Refs ).as ) cloned : SomeCollection
     }
 ```
 

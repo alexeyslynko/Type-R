@@ -413,8 +413,8 @@ Changes in shared record are not detected.
 
 ```typescript
     @define class State extends Record {
-        @type( Item.Collection ).as items : Collection<Item>;
-        @memberOf( 'items' ).as selected : Item
+        @( type( Item.Collection ).as ) items : Collection<Item>;
+        @( memberOf( 'items' ).as ) selected : Item
     }
 ```
 

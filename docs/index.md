@@ -1,11 +1,11 @@
 ---
-title: Type-R 3.0 API Reference
+title: Type-R 4.0 API Reference
 
 language_tabs:
   - javascript
   - typescript
 
-logoTitle: Type-R 3.0
+logoTitle: Type-R 4.0
 
 toc_footers:
   - <a href="https://github.com/Volicon/Type-R">GitHub repository</a>
@@ -147,9 +147,9 @@ uiState.users.fetch();
 ```typescript
 @define UIState extends Record {
     // For collections and more complex types attribute type must be provided explicitly
-    @type( User.Collection ).as users : Collection<User>
+    @( type( User.Collection ).as ) users : Collection<User>
 
-    @memberOf( 'users' ).as selectedUser : User
+    @( memberOf( 'users' ).as ) selectedUser : User
 }
 
 const uiState = new UIState();
@@ -200,14 +200,14 @@ const Email = type( String )
 @define User extends Record {
     static endpoint = restfulIO( '/api/users' );
     
-    // @type(...).as converts Type-R attribute type definition to the TypeScript decorator.
-    @type( String ).required.as
+    // @( type(...).as ) converts Type-R attribute type definition to the TypeScript decorator.
+    @( type( String ).required.as )
         name : string
 
-    @type( Email ).required.as
+    @( type( Email ).required.as )
         email : string
 
-    @type( Date ).check( x => x.getTime() <= Date.now() ).as
+    @( type( Date ).check( x => x.getTime() <= Date.now() ).as )
         createdAt : Date
 }
 
@@ -225,7 +225,7 @@ expect( users.isValid() ).toBe( true );
 
 Is packed as UMD and ES6 module. No peer dependencies are required.
 
-`npm install type-r --save-dev`
+`npm install @type-r/models @type-r/endpoints --save`
 
 <aside class="success">IE10+, Edge, Safari, Chrome, and Firefox are supported</aside>
 
@@ -245,4 +245,3 @@ Is packed as UMD and ES6 module. No peer dependencies are required.
 Type-R can be used at the server side to build the business logic layer by defining the custom I/O endpoints to store data in a database. Type-R dynamic type safety features are particularly advantageous when schema-less JSON databases (like Couchbase) are being used.
 
 ![server](images/3-layer-server.png)
-

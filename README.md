@@ -71,15 +71,14 @@ await msg.save();
 ![overview](docs/images/overview.png)
 
 
-## [Documentation](https://volijs.github.io/Type-R/)
+## [Documentation](https://volicon.github.io/Type-R/)
 
 ## Installation and requirements
 
 Is packed as UMD and ES6 module. No peer dependencies are required.
 
-`npm install type-r --save-dev`
+`npm install @type-r/models @type-r/endpoints --save`
 
 <aside class="success">IE10+, Edge, Safari, Chrome, and Firefox are supported</aside>
 
 <aside class="warning">IE9 and Opera may work but has not been tested. IE8 won't work.</aside>
-

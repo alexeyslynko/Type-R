@@ -1,5 +1,27 @@
 # Release Notes
 
+## 4.0.0
+
+### Tooling
+
+- Project tooling is migrated to Yarn 4.
+- TypeScript is pinned to `6.0.3`.
+- Jest TypeScript tests use `ts-jest` 29.x with Jest 29.x.
+
+### TypeScript 6 decorator syntax
+
+TypeScript 6 requires chained decorator expressions to be parenthesized. Type-R attribute decorators should use the following syntax:
+
+```typescript
+@define class User extends Record {
+    @( type( String ).as ) name : string
+    @( value( "john@example.com" ).as ) email : string
+    @( type( Role.Collection ).as ) roles : Collection<Role>
+}
+```
+
+The previous unparenthesized form, such as `@type( String ).as name : string`, is no longer accepted by the TypeScript parser.
+
 ## 3.0.0
 
 ### Breaking changes
@@ -66,7 +88,7 @@ Specify type and default value | `@attr(T.value(default)) name : T` | `@type(T).
     // Collection of Role records represented as an array of role.id in JSON.
     // When the "roles" attribute will be accessed for the first time,
     // User will look-up for a 'roles' attribute of the nearest store to resolve ids to actual Users.
-    @subsetOf( '~roles' ).as roles : Collection<Role>
+    @( subsetOf( '~roles' ).as ) roles : Collection<Role>
 }
 
 @define class Role extends Record {
@@ -81,8 +103,8 @@ Specify type and default value | `@attr(T.value(default)) name : T` | `@type(T).
 
     // '~roles' references from all aggregated collections
     // will point to here, because this is the nearest store.
-    @type( User.Collection ).as users : Collection<User>
-    @type( Role.Collection ).as roles : Collection<Role>
+    @( type( User.Collection ).as ) users : Collection<User>
+    @( type( Role.Collection ).as ) roles : Collection<Role>
 }
 
 const directory = new UsersDirectory();
