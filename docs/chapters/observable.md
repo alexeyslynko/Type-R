@@ -176,7 +176,7 @@ Type-R uses an efficient synchronous events implementation which is backward com
 Both `source` and `listener` mentioned in method signatures must implement Events methods.
 
 ```javascript
-import { mixins, Events } from 'type-r'
+import { mixins, Events } from '@type-r/mixture'
 
 @mixins( Events )
 class EventfulClass {
@@ -299,7 +299,7 @@ change | (record, options) | The record is changed inside of collection.
 Messenger is an abstract base class implementing Events mixin and some convenience methods.
 
 ```javascript
-import { define, Messenger } from 'type-r'
+import { define, Messenger } from '@type-r/models'
 
 class MyMessenger extends Messenger {
 

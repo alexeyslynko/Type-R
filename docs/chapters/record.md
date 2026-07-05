@@ -7,7 +7,7 @@ Records may have other records and collections of records stored in its attribut
 All aspects of an attribute behavior are controlled with attribute metadata, which (taken together with its type) is called *attribite metatype*. Metatypes can be declared separately and reused across multiple records definitions.
 
 ```javascript
-import { define, type, Record } from 'type-r'
+import { define, type, Record } from '@type-r/models'
 
 // ⤹ required to make magic work  
 @define class User extends Record {
@@ -33,7 +33,7 @@ users.updateEach( user => user.firstName = '' ); // ⟵ bulk update triggering '
 ```
 
 ```typescript
-import { define, attr, type, Record } from 'type-r'
+import { define, auto, type, value, Record, Collection } from '@type-r/models'
 import "reflect-metadata" // Required for @auto without arguments
 
 // ⤹ required to make the magic work  
@@ -237,7 +237,7 @@ If record needs to reference itself in its attributes definition, `@predefine` d
 
 Date attribute initialized as `new Date()`, and represented in JSON as UTC ISO string.
 
-There are other popular Date serialization options available in `type-r/ext-types` package.
+There are other popular Date serialization options available in the `@type-r/ext-types` package.
 
 * `MicrosoftDate` - Date serialized as Microsoft's `"/Date(msecs)/"` string.
 * `Timestamp` - Date serializaed as UNIX integer timestamp (`date.getTime()`).
@@ -289,7 +289,7 @@ Attribute definition can have different metadata attached which affects various 
 a chain of calls after the `type( Ctor )` call. Attribute's default value is the most common example of such a metadata and is the single option which can be applied to the constructor function directly.
 
 ```javascript
-import { define, type, Record }
+import { define, type, Record } from '@type-r/models'
 
 @define class Dummy extends Record {
     static attributes = {
@@ -317,7 +317,7 @@ Turns TypeScript class property definition to the record's attribute, automatica
 `@auto` may take a single parameter as an attribute default value. No other attribute metadata can be attached.
 
 ```typescript
-import { define, auto, Record } from 'type-r'
+import { define, auto, Record } from '@type-r/models'
 
 @define class User extends Record {
     @auto name : string
@@ -331,7 +331,7 @@ import { define, auto, Record } from 'type-r'
 Attribute definition creates the TypeScript property decorator when being appended with `.as` suffix. It's an alternative syntax to `@auto`.
 
 ```typescript
-import { define, type, Record } from 'type-r'
+import { define, type, value, Record } from '@type-r/models'
 
 @define class User extends Record {
     @value( "5" ).as name : string
@@ -551,7 +551,7 @@ Record's attributes can hold other Records and Collections, forming indefinitely
 To create nested record or collection you should just mention its constructor function in attribute's definition.
 
 ```javascript
-import { Record } from 'type-r'
+import { define, Record } from '@type-r/models'
 
 @define class User extends Record {
     static attributes = {

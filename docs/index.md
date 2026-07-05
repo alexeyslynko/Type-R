@@ -39,11 +39,11 @@ A state is defined as a superposition of typed records and collections. A record
 
 Application state defined with Type-R is serializable to JSON by default. Aggregation tree of records and collections is mapped in JSON as a tree of plain objects and arrays. Normalized data represented as a set of collections of records cross-referencing each other are supported as first-class serialization scenario.
 
-A record may have an associated IOEndpont representing the I/O protocol for CRUD and collection fetch operations which enables the persistence API for the particular record/collection class pair. Some useful endpoints (`restfulIO`, `localStorageIO`, etc) are provided by `type-r/endpoints/*` packages, and developers can define their own I/O endpoints implementing any particular persistence transport or API.
+A record may have an associated IOEndpont representing the I/O protocol for CRUD and collection fetch operations which enables the persistence API for the particular record/collection class pair. Some useful endpoints (`restfulIO`, `localStorageIO`, etc) are provided by the `@type-r/endpoints` package, and developers can define their own I/O endpoints implementing any particular persistence transport or API.
 
 Record attributes may have custom validation rules attached to them. Validation is being triggered transparently on demand and its result is cached across the record/collection aggregation tree, making subsequent calls to the validation API extremely cheap.
 
-All aspects of record behavior including serialization and validation can be controlled on attribute level with declarative definitions combining attribute types with metadata. Attribute definitions ("metatypes") can be reused across different models forming the domain-specific language of model declarations. Some useful attribute metatypes (`Email`, `Url`, `MicrosoftDate`, etc) are provided by `type-r/ext-types` package.
+All aspects of record behavior including serialization and validation can be controlled on attribute level with declarative definitions combining attribute types with metadata. Attribute definitions ("metatypes") can be reused across different models forming the domain-specific language of model declarations. Some useful attribute metatypes (`Email`, `Url`, `MicrosoftDate`, etc) are provided by the `@type-r/ext-types` package.
 
 ## How Type-R compares to X?
 

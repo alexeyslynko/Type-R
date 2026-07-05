@@ -16,7 +16,7 @@ Record definition must:
 _Must_ be placed before record class definition.
 
 ```javascript
-import { define, Record } from 'type-r'
+import { define, Record } from '@type-r/models'
 
 @define class X extends Record {
     ...    
@@ -304,7 +304,7 @@ Record's attributes can hold other Records and Collections, forming indefinitely
 To create nested record or collection you should just mention its constructor function in attribute's definition.
 
 ```javascript
-import { Record } from 'type-r'
+import { define, Record } from '@type-r/models'
 
 @define class User extends Record {
     static attributes = {

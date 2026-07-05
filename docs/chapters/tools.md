@@ -16,7 +16,7 @@ The `level` corresponds to the logging methods of the `console` object: `error`,
 If you want to use Type-R
 
 ```javascript
-import { log } from 'type-r'
+import { log } from '@type-r/mixture'
 
 log( 'error', 'client-api:users', 'No user with the given id', { user } );
 ```
@@ -24,7 +24,7 @@ log( 'error', 'client-api:users', 'No user with the given id', { user } );
 ### logger.off()
 
 ```javascript
-import { logger } from 'type-r'
+import { logger } from '@type-r/mixture'
 
 // Remove all the listeners
 logger.off();
@@ -38,7 +38,7 @@ logger.off( 'warn' );
 Sometimes (for instance, in a test suite) developer would like Type-R to throw exceptions on type errors instead of the console warnings.
 
 ```javascript
-import { logger } from 'type-r'
+import { logger } from '@type-r/mixture'
 
 logger.off().throwOn( 'error' ).throwOn( 'warn' );
 ```
@@ -46,7 +46,7 @@ logger.off().throwOn( 'error' ).throwOn( 'warn' );
 Or, there might be a need to throw exceptions on error in the specific situation (e.g. throw if the incoming HTTP request is not valid to respond with 500 HTTP code).
 
 ```javascript
-import { Logger } from 'type-r'
+import { Logger } from '@type-r/mixture'
 
 async function processRequest( ... ){
     // Create an empty logger
@@ -66,7 +66,7 @@ async function processRequest( ... ){
 Type-R log message is the regular event. It's easy to attach custom listeners to integrate third-party log management libraries.
 
 ```javascript
-import { logger } from 'type-r'
+import { logger } from '@type-r/mixture'
 
 logger
     .off()
@@ -213,7 +213,7 @@ Finalized the class definition started with `@predefine` decorator. Has the same
 Merge specified mixins to the class definition. Both plain JS object and class constructor may be used as mixin. In the case of the class constructor, missing static members will copied over as well.
 
 ```javascript
-    import { mixins, Events } from 'type-r'
+    import { mixins, Events } from '@type-r/mixture'
     ...
 
     @define

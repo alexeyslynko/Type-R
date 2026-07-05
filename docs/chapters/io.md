@@ -116,7 +116,7 @@ All I/O methods append an optional `options.params` object to the URL parameters
 Supports URI relative to owner (`./relative/url` resolves as `/owner/:id/relative/url/:id` ).
 
 ```javascript
-import { restfulIO } from 'type-r/endpoints/restful'
+import { restfulIO } from '@type-r/endpoints'
 
 @define class Role extends Record {
     static endpoint = restfulIO( '/api/roles' );
@@ -139,7 +139,7 @@ import { restfulIO } from 'type-r/endpoints/restful'
 Endpoint for mock testing. Takes optional array with mock data, and optional `delay` parameter which is the simulated I/O delay in milliseconds.
 
 ```javascript
-import { memoryIO } from 'type-r/endpoints/memory'
+import { memoryIO } from '@type-r/endpoints'
 
 @define class User extends Record {
     static endpoint = memoryIO();
@@ -152,7 +152,7 @@ import { memoryIO } from 'type-r/endpoints/memory'
 Endpoint for localStorage. Takes `key` parameter which must be unique for the persistent record's collection.
 
 ```javascript
-import { localStorageIO } from 'type-r/endpoints/localStorage'
+import { localStorageIO } from '@type-r/endpoints'
 
 @define class User extends Record {
     static endpoint = localStorageIO( '/users' );
@@ -167,7 +167,7 @@ Endpoint for I/O composition. Redirects record's `fetch()` request to its attrib
 It's common pattern to use attributesIO endpoint in conjunction with Store to fetch all the data required by SPA page.
 
 ```javascript
-import { localStorageIO } from 'type-r/endpoints/attributes'
+import { attributesIO } from '@type-r/endpoints'
 
 @define class PageStore extends Store {
     static endpoint = attributesIO();
@@ -191,7 +191,7 @@ an existing Record subclass as a transport. This endpoint can be connected to th
 An advantage of this approach is that JSON schema will be transparently validated on the server side by the Type-R.
 
 ```javascript
-    import { proxyIO } from 'type-r/endpoint/proxy'
+    import { proxyIO } from '@type-r/endpoints'
     
     ...
 
@@ -253,7 +253,7 @@ Service function to create an abortable version of ES6 promise (with `promise.ab
 `init` function takes the third `onAbort` argument to register an optional abort handler. If no handler is registered, the default implementation of `promise.abort()` will just reject the promise.
 
 ```javascript
-import { createIOPromise } from 'type-r'
+import { createIOPromise } from '@type-r/models'
 
 const abortablePromise = createIOPromise( ( resolve, reject, onAbort ) =>{
     ...
