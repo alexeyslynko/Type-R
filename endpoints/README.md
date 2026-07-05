@@ -85,6 +85,111 @@ import { localStorageIO } from 'type-r/endpoints/localStorage'
 }
 ```
 
+### websocketIO( url, options? )
+
+Basic WebSocket endpoint for collection live updates. It implements `subscribe()` and `unsubscribe()` and does not implement REST-like CRUD/list methods. Use it when a collection is loaded by another endpoint or when you only need live updates.
+
+Several collections using the same `url`, `WebSocket` constructor, and `protocols` share one WebSocket connection. Each collection still sends its own subscribe/unsubscribe messages.
+
+```javascript
+import { websocketIO } from '@type-r/endpoints'
+
+@define class User extends Model {
+    static endpoint = websocketIO( 'ws://localhost:3000/live', {
+        subscribeMessage : () => ({
+            type : 'subscribe',
+            channel : 'users'
+        }),
+
+        unsubscribeMessage : () => ({
+            type : 'unsubscribe',
+            channel : 'users'
+        }),
+
+        // Route only messages for this collection.
+        match : message => message.channel === 'users'
+    });
+
+    static attributes = {
+        name : ''
+    }
+}
+
+const users = new User.Collection();
+users.liveUpdates( true );
+```
+
+Supported update messages:
+
+```javascript
+{
+    channel : 'users',
+    type : 'updated',
+    payload : {
+        id : '1',
+        name : 'Ann'
+    }
+}
+```
+
+Supported remove messages:
+
+```javascript
+{
+    channel : 'users',
+    type : 'removed',
+    payload : '1'
+}
+```
+
+Compact envelopes are also supported:
+
+```javascript
+{ updated : { id : '1', name : 'Ann' } }
+{ removed : '1' }
+```
+
+`websocketIO()` is intentionally small. It does not provide reconnect, heartbeat, subscribe acknowledgements, cursors, event replay, or resync. Use `@type-r/live-websocket` for a production realtime protocol with those features.
+
+### restfulWebsocketIO( url, websocketUrl, options? )
+
+Combined endpoint using `restfulIO` semantics for CRUD/list operations and basic WebSocket subscription for collection live updates.
+
+```javascript
+import { restfulWebsocketIO } from '@type-r/endpoints'
+
+@define class User extends Model {
+    static endpoint = restfulWebsocketIO(
+        'http://localhost:3000/api/users',
+        'ws://localhost:3000/live',
+        {
+            subscribeMessage : () => ({
+                type : 'subscribe',
+                channel : 'users'
+            }),
+
+            unsubscribeMessage : () => ({
+                type : 'unsubscribe',
+                channel : 'users'
+            }),
+
+            match : message => message.channel === 'users'
+        }
+    );
+
+    static attributes = {
+        name : ''
+    }
+}
+
+const users = new User.Collection();
+
+// Fetches the REST snapshot and enables WebSocket live updates.
+users.fetch({ liveUpdates : true });
+```
+
+When `fetch({ liveUpdates : true })` is used, Type-R subscribes to live updates first and then performs the REST `list()` request. The basic WebSocket endpoint considers subscription ready when the socket is open and the subscribe message has been sent.
+
 ### attributesIO()
 
 Endpoint for I/O composition. Redirects model's `fetch()` request to its attributes and returns the combined abortable promise. Does not enable any other I/O methods and can be used with `model.fetch()` only.
