@@ -46,8 +46,8 @@ export declare class MixinsState {
 export interface MixinMergeRules {
     [name: string]: MixinMergeRule;
 }
-export declare type MixinMergeRule = (a: any, b: any) => any;
-export declare type Mixin = {
+export type MixinMergeRule = (a: any, b: any) => any;
+export type Mixin = {
     [key: string]: any;
 } | Function;
 export interface MixinRulesDecorator {

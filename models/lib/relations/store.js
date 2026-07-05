@@ -1,9 +1,9 @@
-import * as tslib_1 from "tslib";
+import { __extends } from "tslib";
 import { Record } from '../record';
 import { Transactional } from '../transactions';
 var _store = null;
 var Store = (function (_super) {
-    tslib_1.__extends(Store, _super);
+    __extends(Store, _super);
     function Store() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -22,7 +22,7 @@ var Store = (function (_super) {
             }
             Transactional.prototype._defaultStore = _store = store;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return Store;

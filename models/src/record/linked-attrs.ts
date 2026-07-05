@@ -43,12 +43,16 @@ export class ModelAttrRef extends ValueLink<any> {
     }
 
     _error : any
-
-    get error(){
-        return this._error || ( this._error = this.model.getValidationError( this.attr ) );
-    }
-
-    set error( x : any ){
-        this._error = x;
-    }
 }
+
+Object.defineProperty( ModelAttrRef.prototype, 'error', {
+    get : function(){
+        return this._error || ( this._error = this.model.getValidationError( this.attr ) );
+    },
+
+    set : function( x : any ){
+        this._error = x;
+    },
+
+    configurable : true
+});

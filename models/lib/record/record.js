@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __assign, __decorate, __extends } from "tslib";
 import { define, definitions, isProduction, logger, mixinRules, tools } from '@type-r/mixture';
 import { Transactional } from '../transactions';
 import { type } from './attrDef';
@@ -8,7 +8,7 @@ import { setAttribute, shouldBeAnObject, unknownAttrsWarning, UpdateRecordMixin 
 var assign = tools.assign, isEmpty = tools.isEmpty;
 var _cidCounter = 0;
 var Record = (function (_super) {
-    tslib_1.__extends(Record, _super);
+    __extends(Record, _super);
     function Record(a_values, a_options) {
         var _this = _super.call(this, _cidCounter++) || this;
         _this._attributes$ = void 0;
@@ -33,7 +33,7 @@ var Record = (function (_super) {
                 return _a = {}, _a[_this.prototype.idAttribute] = x, _a;
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Record.extendAttrs = function (attrs) {
@@ -46,13 +46,13 @@ var Record = (function (_super) {
         get: function () {
             return this._attributes$ || (this._attributes$ = new this.__Attributes$(this));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Record.prototype.previousAttributes = function () { return new this.AttributesCopy(this._previousAttributes); };
     Object.defineProperty(Record.prototype, "__inner_state__", {
         get: function () { return this.attributes; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Record.prototype, "changed", {
@@ -73,12 +73,12 @@ var Record = (function (_super) {
             }
             return changed;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Record.prototype.changedAttributes = function (diff) {
         if (!diff)
-            return this.hasChanged() ? tslib_1.__assign({}, this.changed) : false;
+            return this.hasChanged() ? __assign({}, this.changed) : false;
         var val, changed = false, old = this._transaction ? this._previousAttributes : this.attributes, attrSpecs = this._attributes;
         for (var attr in diff) {
             if (!attrSpecs[attr].isChanged(old[attr], (val = diff[attr])))
@@ -112,7 +112,7 @@ var Record = (function (_super) {
     Record.prototype.unset = function (key, options) {
         var _a;
         var value = this[key];
-        this.set((_a = {}, _a[key] = void 0, _a), tslib_1.__assign({ unset: true }, options));
+        this.set((_a = {}, _a[key] = void 0, _a), __assign({ unset: true }, options));
         return value;
     };
     Record.prototype.clear = function (options) {
@@ -130,7 +130,7 @@ var Record = (function (_super) {
     Object.defineProperty(Record.prototype, "id", {
         get: function () { return this.attributes[this.idAttribute]; },
         set: function (x) { setAttribute(this, this.idAttribute, x); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Record.prototype.defaults = function (values) {
@@ -226,7 +226,7 @@ var Record = (function (_super) {
         get: function () {
             return this._ownerKey ? null : this._owner;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Record.prototype.dispose = function () {
@@ -240,7 +240,7 @@ var Record = (function (_super) {
         _super.prototype.dispose.call(this);
     };
     Record.prototype._log = function (level, topic, text, props, a_logger) {
-        (a_logger || logger).trigger(level, topic, this.getClassName() + ' ' + text, tslib_1.__assign({}, props, { 'Record': this, 'Attributes definition': this._attributes }));
+        (a_logger || logger).trigger(level, topic, this.getClassName() + ' ' + text, __assign(__assign({}, props), { 'Record': this, 'Attributes definition': this._attributes }));
     };
     Record.prototype.getClassName = function () {
         return _super.prototype.getClassName.call(this) || 'Record';
@@ -272,7 +272,7 @@ var Record = (function (_super) {
     var Record_1;
     Record._metatype = AggregatedType;
     Record.id = type(String).value(null);
-    Record = Record_1 = tslib_1.__decorate([
+    Record = Record_1 = __decorate([
         define({
             cidPrefix: 'm',
             _changeEventName: 'change',
@@ -315,7 +315,7 @@ function typeCheck(record, values, options) {
         for (var name_3 in values) {
             if (!_attributes[name_3]) {
                 unknown || (unknown = []);
-                unknown.push("'" + name_3 + "'");
+                unknown.push("'".concat(name_3, "'"));
             }
         }
         if (unknown) {

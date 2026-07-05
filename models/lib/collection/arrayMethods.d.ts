@@ -1,5 +1,5 @@
 import { Record } from '../record';
-export declare type Predicate<R> = ((val: R, key?: number) => boolean) | Partial<R>;
+export type Predicate<R> = ((val: R, key?: number) => boolean) | Partial<R>;
 export declare abstract class ArrayMixin<R extends Record> {
     models: R[];
     abstract get(modelOrId: string | Partial<R>): R;

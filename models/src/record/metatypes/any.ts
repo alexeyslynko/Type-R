@@ -80,7 +80,7 @@ export class AnyType implements AttributeUpdatePipeline {
      */
 
     // create empty object passing backbone options to constructor...
-    create() { return void 0; }
+    create() : any { return void 0; }
 
     // generic clone function for typeless attributes
     // Must be overriden in sublass

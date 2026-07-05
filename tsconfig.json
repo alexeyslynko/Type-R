@@ -7,10 +7,16 @@
     "declaration": true,
     "importHelpers": true,
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "sourceMap": true,
     "outDir": "./lib",
     "esModuleInterop": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
     "noImplicitAny": false,
+    "noImplicitThis": false,
+    "noImplicitReturns": false,
     "removeComments":true,
     "experimentalDecorators": true
   }

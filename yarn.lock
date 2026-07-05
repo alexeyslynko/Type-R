@@ -444,7 +444,7 @@ __metadata:
     rollup-plugin-sourcemaps: "npm:*"
     rollup-plugin-uglify: "npm:*"
     tslib: "npm:*"
-    typescript: "npm:*"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -458,7 +458,7 @@ __metadata:
     rollup-plugin-sourcemaps: "npm:*"
     rollup-plugin-uglify: "npm:*"
     tslib: "npm:*"
-    typescript: "npm:*"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -473,7 +473,7 @@ __metadata:
     rollup-plugin-sourcemaps: "npm:*"
     rollup-plugin-uglify: "npm:*"
     tslib: "npm:*"
-    typescript: "npm:*"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -487,7 +487,7 @@ __metadata:
     rollup-plugin-sourcemaps: "npm:*"
     rollup-plugin-uglify: "npm:*"
     tslib: "npm:*"
-    typescript: "npm:*"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -503,7 +503,7 @@ __metadata:
     rollup-plugin-sourcemaps: "npm:*"
     rollup-plugin-uglify: "npm:*"
     tslib: "npm:*"
-    typescript: "npm:*"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -519,7 +519,7 @@ __metadata:
     rollup-plugin-node-resolve: "npm:*"
     rollup-plugin-sourcemaps: "npm:*"
     rollup-plugin-uglify: "npm:*"
-    typescript: "npm:*"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -4528,7 +4528,7 @@ __metadata:
     rollup-plugin-paths: "npm:*"
     rollup-plugin-sourcemaps: "npm:*"
     rollup-plugin-uglify: "npm:*"
-    typescript: "npm:*"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -5213,23 +5213,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:*":
-  version: 3.5.3
-  resolution: "typescript@npm:3.5.3"
+"typescript@npm:6.0.3":
+  version: 6.0.3
+  resolution: "typescript@npm:6.0.3"
   bin:
-    tsc: ./bin/tsc
-    tsserver: ./bin/tsserver
-  checksum: 10c0/26e4036eec091ce43d74ddc2f873bd3ccf544b764dd2c7228930ffd38bfacc2a705ff9e01a7c89a371101e9b04de4e470ff52b0b79ecd5e7576f964cc53a0381
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/4a25ff5045b984370f48f196b3a0120779b1b343d40b9a68d114ea5e5fff099809b2bb777576991a63a5cd59cf7bffd96ff6fe10afcefbcb8bd6fb96ad4b6606
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A*#optional!builtin<compat/typescript>":
-  version: 3.5.3
-  resolution: "typescript@patch:typescript@npm%3A3.5.3#optional!builtin<compat/typescript>::version=3.5.3&hash=19b265"
+"typescript@patch:typescript@npm%3A6.0.3#optional!builtin<compat/typescript>":
+  version: 6.0.3
+  resolution: "typescript@patch:typescript@npm%3A6.0.3#optional!builtin<compat/typescript>::version=6.0.3&hash=5786d5"
   bin:
-    tsc: ./bin/tsc
-    tsserver: ./bin/tsserver
-  checksum: 10c0/86266fdd1acdf71a895f86763b064786daa368c511d9abc9d9f2a04102fee6162d175f21bc3dba91bd7711d23af3d7e9e1be011da017327d2e39beb3576ae923
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/2f25c74e65663c248fa1ade2b8459d9ce5372ff9dad07067310f132966ebec1d93f6c42f0baf77a6b6a7a91460463f708e6887013aaade22111037457c6b25df
   languageName: node
   linkType: hard
 

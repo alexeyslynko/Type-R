@@ -129,16 +129,16 @@ describe( 'IO', function(){
         @define class TestStore extends Store {
             static endpoint = attributesIO();
 
-            @type( NoEndpoint.Collection )
+            @( type( NoEndpoint.Collection )
             .endpoint( memoryIO([{ id : "777" }]) )
-            .as a : Collection<NoEndpoint>;
+            .as ) a : Collection<NoEndpoint>;
 
-            @type( HasEndpoint.Collection )
-            .as b : Collection<HasEndpoint>;
+            @( type( HasEndpoint.Collection )
+            .as ) b : Collection<HasEndpoint>;
             
-            @type( HasEndpoint.Collection )
+            @( type( HasEndpoint.Collection )
             .endpoint( memoryIO([{ id : "555" }]) )
-            .as c : Collection<HasEndpoint>;
+            .as ) c : Collection<HasEndpoint>;
         }
 
         const s = new TestStore();
@@ -257,8 +257,8 @@ describe( 'IO', function(){
             class Root extends Record {
                 static endpoint = restfulIO( 'http://restful.relative/' );
                 
-                @type( User.Collection )
-                .as users : Collection<User>
+                @( type( User.Collection )
+                .as ) users : Collection<User>
 
                 @auto store : Store
             }

@@ -1,8 +1,8 @@
-import * as tslib_1 from "tslib";
+import { __extends } from "tslib";
 import { AnyType, ChainableAttributeSpec } from '../record';
 import { parseReference } from './commons';
 var RecordRefType = (function (_super) {
-    tslib_1.__extends(RecordRefType, _super);
+    __extends(RecordRefType, _super);
     function RecordRefType() {
         return _super !== null && _super.apply(this, arguments) || this;
     }

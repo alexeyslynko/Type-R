@@ -2,12 +2,12 @@ import { IOEndpoint, IOOptions } from '@type-r/models';
 import { MemoryEndpoint } from './memory';
 export declare function create(url: string, fetchOptions?: Partial<RestfulFetchOptions>): RestfulEndpoint;
 export { create as restfulIO };
-export declare type HttpMethod = 'GET' | 'POST' | 'UPDATE' | 'DELETE' | 'PUT';
+export type HttpMethod = 'GET' | 'POST' | 'UPDATE' | 'DELETE' | 'PUT';
 export interface RestfulIOOptions extends IOOptions {
     params?: object;
     options?: RequestInit;
 }
-export declare type RestfulFetchOptions = {
+export type RestfulFetchOptions = {
     cache?: RequestCache;
     credentials?: RequestCredentials;
     mode?: RequestMode;

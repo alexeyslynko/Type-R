@@ -10,14 +10,14 @@ export interface MessengerDefinition {
 export interface PropertyMap {
     [name: string]: Property;
 }
-export declare type Property = PropertyDescriptor | (() => any);
+export type Property = PropertyDescriptor | (() => any);
 export interface MessengersByCid {
     [cid: string]: Messenger;
 }
-export declare type EventCallbacks<Context> = {
+export type EventCallbacks<Context> = {
     [events: string]: EventCallback<Context>;
 };
-export declare type EventCallback<Context> = (this: Context, ...args: any[]) => void;
+export type EventCallback<Context> = (this: Context, ...args: any[]) => void;
 export declare class Messenger implements Mixable, EventSource {
     static mixins: MixinsState;
     static onExtend: (BaseClass: Function) => void;

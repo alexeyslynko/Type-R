@@ -6,8 +6,8 @@ export interface ConstructorsMixin {
 export interface ConstructorOptions extends TransactionOptions {
     clone?: boolean;
 }
-export declare type AttributesConstructor = new (record: AttributesContainer, values: object, options: TransactionOptions) => AttributesValues;
-export declare type AttributesCopyConstructor = new (values: object) => AttributesValues;
+export type AttributesConstructor = new (record: AttributesContainer, values: object, options: TransactionOptions) => AttributesValues;
+export type AttributesCopyConstructor = new (values: object) => AttributesValues;
 export interface AttributesContainer extends Transactional, Owner, ConstructorsMixin {
     attributes: AttributesValues;
 }

@@ -1,6 +1,8 @@
 import { Messenger } from './events'
 import { define } from './mixins';
 
+declare var process : any;
+
 export type LogLevel = 'error' | 'warn' | 'debug' | 'info' | 'log';
 export type LoggerEventHandler = ( topic : string, msg : string, props : object )  => void;
 

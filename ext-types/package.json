@@ -17,7 +17,7 @@
         "rollup-plugin-node-resolve": "*",
         "rollup-plugin-sourcemaps": "*",
         "rollup-plugin-uglify": "*",
-        "typescript": "*"
+        "typescript": "6.0.3"
     },
     "author": "Ivan Terpugov",
     "license": "MIT"

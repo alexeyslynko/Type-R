@@ -6,11 +6,11 @@ export interface CollectionCore extends Transactional, Owner {
     idAttribute: string;
     get(objOrId: string | Record | Object): Record;
 }
-export declare type Elements = (Object | Record)[];
+export type Elements = (Object | Record)[];
 export interface CollectionOptions extends TransactionOptions {
     sort?: boolean;
 }
-export declare type Comparator = (a: Record, b: Record) => number;
+export type Comparator = (a: Record, b: Record) => number;
 export declare function dispose(collection: CollectionCore): Record[];
 export declare function convertAndAquire(collection: CollectionCore, attrs: {} | Record, options: CollectionOptions): Record;
 export declare function free(owner: CollectionCore, child: Record, unset?: boolean): void;

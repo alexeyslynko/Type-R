@@ -16,7 +16,7 @@
     "rollup-plugin-node-resolve": "*",
     "rollup-plugin-sourcemaps": "*",
     "rollup-plugin-uglify": "*",
-    "typescript": "*"
+    "typescript": "6.0.3"
   },
   "scripts": {
     "cleanup": "rimraf ./lib",

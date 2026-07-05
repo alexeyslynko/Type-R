@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __assign } from "tslib";
 import { tools } from '@type-r/mixture';
 import { setAttribute } from '../updates';
 var notEqual = tools.notEqual, assign = tools.assign;
@@ -8,7 +8,7 @@ var AnyType = (function () {
         this.name = name;
         this.getHook = null;
         this.options = a_options;
-        var options = tslib_1.__assign({ getHooks: [], transforms: [], changeHandlers: [] }, a_options);
+        var options = __assign({ getHooks: [], transforms: [], changeHandlers: [] }, a_options);
         options.getHooks = options.getHooks.slice();
         options.transforms = options.transforms.slice();
         options.changeHandlers = options.changeHandlers.slice();
@@ -19,7 +19,7 @@ var AnyType = (function () {
             this.defaultValue = this.create;
         }
         else if (tools.isValidJSON(value)) {
-            this.defaultValue = new Function("return " + JSON.stringify(value) + ";");
+            this.defaultValue = new Function("return ".concat(JSON.stringify(value), ";"));
         }
         else {
             this.defaultValue = this.defaultValue;
@@ -102,7 +102,7 @@ var AnyType = (function () {
         return false;
     };
     AnyType.prototype._log = function (level, code, text, value, record, logger) {
-        record._log(level, code, record.getClassName() + "." + this.name + " " + text, {
+        record._log(level, code, "".concat(record.getClassName(), ".").concat(this.name, " ").concat(text), {
             'New value': value,
             'Prev. value': record.attributes[this.name]
         }, logger);

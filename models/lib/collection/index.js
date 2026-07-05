@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __assign, __decorate, __extends } from "tslib";
 import { startIO } from '../io-tools';
 import { define, definitions, EventMap, eventsApi, logger, Mixable, mixinRules, mixins } from '@type-r/mixture';
 import { AggregatedType, Record, SharedType } from '../record';
@@ -10,7 +10,7 @@ import { emptySetTransaction, setTransaction } from './set';
 var trigger2 = eventsApi.trigger2, begin = transactionApi.begin, commit = transactionApi.commit, markAsDirty = transactionApi.markAsDirty;
 var _count = 0;
 var CollectionRefsType = (function (_super) {
-    tslib_1.__extends(CollectionRefsType, _super);
+    __extends(CollectionRefsType, _super);
     function CollectionRefsType() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -19,7 +19,7 @@ var CollectionRefsType = (function (_super) {
 }(SharedType));
 ;
 var Collection = (function (_super) {
-    tslib_1.__extends(Collection, _super);
+    __extends(Collection, _super);
     function Collection(records, options, shared) {
         if (options === void 0) { options = {}; }
         var _this = _super.call(this, _count++) || this;
@@ -80,7 +80,7 @@ var Collection = (function (_super) {
     };
     Object.defineProperty(Collection.prototype, "__inner_state__", {
         get: function () { return this.models; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Collection.prototype, "comparator", {
@@ -113,7 +113,7 @@ var Collection = (function (_super) {
                     this._comparator = null;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Collection.prototype.getStore = function () {
@@ -214,9 +214,9 @@ var Collection = (function (_super) {
     Collection.prototype.fetch = function (a_options) {
         var _this = this;
         if (a_options === void 0) { a_options = {}; }
-        var options = tslib_1.__assign({ parse: true }, a_options), endpoint = this.getEndpoint();
+        var options = __assign({ parse: true }, a_options), endpoint = this.getEndpoint();
         return startIO(this, endpoint.list(options, this), options, function (json) {
-            var result = _this.set(json, tslib_1.__assign({ parse: true, ioMethod: 'fetch' }, options));
+            var result = _this.set(json, __assign({ parse: true, ioMethod: 'fetch' }, options));
             if (options.liveUpdates) {
                 result = _this.liveUpdates(options.liveUpdates);
             }
@@ -247,7 +247,7 @@ var Collection = (function (_super) {
             this.models = [];
         }
         markAsDirty(this, options);
-        options.silent || trigger2(this, 'reset', this, tslib_1.__assign({ previousModels: previousModels }, options));
+        options.silent || trigger2(this, 'reset', this, __assign({ previousModels: previousModels }, options));
         var _byId = this._byId;
         for (var _i = 0, previousModels_1 = previousModels; _i < previousModels_1.length; _i++) {
             var toDispose = previousModels_1[_i];
@@ -300,7 +300,7 @@ var Collection = (function (_super) {
     };
     Collection.prototype.unset = function (modelOrId, options) {
         var value = this.get(modelOrId);
-        this.remove(modelOrId, tslib_1.__assign({ unset: true }, options));
+        this.remove(modelOrId, __assign({ unset: true }, options));
         return value;
     };
     Collection.prototype.modelId = function (attrs) {
@@ -319,7 +319,7 @@ var Collection = (function (_super) {
         return next;
     };
     Collection.prototype._log = function (level, topic, text, value, a_logger) {
-        (a_logger || logger).trigger(level, topic, this.model.prototype.getClassName() + "." + this.getClassName() + ": " + text, {
+        (a_logger || logger).trigger(level, topic, "".concat(this.model.prototype.getClassName(), ".").concat(this.getClassName(), ": ") + text, {
             Argument: value,
             'Attributes spec': this.model.prototype._attributes
         });
@@ -329,28 +329,28 @@ var Collection = (function (_super) {
     };
     Object.defineProperty(Collection.prototype, "length", {
         get: function () { return this.models.length; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Collection.prototype.push = function (model, options) {
-        return this.add(model, tslib_1.__assign({ at: this.length }, options));
+        return this.add(model, __assign({ at: this.length }, options));
     };
     Collection.prototype.pop = function (options) {
         var model = this.at(this.length - 1);
-        this.remove(model, tslib_1.__assign({ unset: true }, options));
+        this.remove(model, __assign({ unset: true }, options));
         return model;
     };
     Collection.prototype.unshift = function (model, options) {
-        return this.add(model, tslib_1.__assign({ at: 0 }, options));
+        return this.add(model, __assign({ at: 0 }, options));
     };
     Collection.prototype.shift = function (options) {
         var model = this.at(0);
-        this.remove(model, tslib_1.__assign({ unset: true }, options));
+        this.remove(model, __assign({ unset: true }, options));
         return model;
     };
     var Collection_1;
     Collection._metatype = AggregatedType;
-    Collection = Collection_1 = tslib_1.__decorate([
+    Collection = Collection_1 = __decorate([
         define({
             cidPrefix: 'c',
             model: Record,

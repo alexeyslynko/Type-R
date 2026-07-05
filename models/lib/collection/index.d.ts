@@ -4,7 +4,7 @@ import { Record } from '../record';
 import { CloneOptions, Transactional, TransactionalDefinition, TransactionOptions } from '../transactions';
 import { AddOptions } from './add';
 import { CollectionCore } from './commons';
-export declare type GenericComparator = string | ((x: Record) => number) | ((a: Record, b: Record) => number);
+export type GenericComparator = string | ((x: Record) => number) | ((a: Record, b: Record) => number);
 export interface CollectionOptions extends TransactionOptions {
     comparator?: GenericComparator;
     model?: typeof Record;
@@ -19,7 +19,7 @@ export interface CollectionConstructor<R extends Record = Record> extends TheTyp
     prototype: Collection<R>;
     Refs: CollectionConstructor<R>;
 }
-declare type CollectionOf<M extends typeof Record> = M['Collection'] extends CollectionConstructor<InstanceType<M>> ? M['Collection'] : CollectionConstructor<InstanceType<M>>;
+type CollectionOf<M extends typeof Record> = M['Collection'] extends CollectionConstructor<InstanceType<M>> ? M['Collection'] : CollectionConstructor<InstanceType<M>>;
 export declare class Collection<R extends Record = Record> extends Transactional implements CollectionCore, Iterable<R> {
     static of<M extends typeof Record>(Ctor: M): CollectionOf<M>;
     static ofRefs<M extends typeof Record>(Ctor: M): CollectionOf<M>;
@@ -29,8 +29,9 @@ export declare class Collection<R extends Record = Record> extends Transactional
     static onExtend(BaseClass: typeof Transactional): void;
     static onDefine(definition: CollectionDefinition, BaseClass: any): void;
     models: R[];
-    comparator: GenericComparator;
+    set comparator(x: GenericComparator);
     getStore(): Transactional;
+    get comparator(): GenericComparator;
     get(objOrId: string | {
         id?: string;
         cid?: string;
@@ -50,22 +51,22 @@ export declare class Collection<R extends Record = Record> extends Transactional
     } & TransactionOptions): IOPromise<this>;
     dispose(): void;
     reset(a_elements?: ElementsArg<R>, options?: TransactionOptions): R[];
-    add(a_elements: ElementsArg<R>, options?: AddOptions): any;
+    add(a_elements: ElementsArg<R>, options?: AddOptions): Record[];
     remove(recordsOrIds: any, options?: CollectionOptions): R[] | R;
     sort(options?: TransactionOptions): this;
     unset(modelOrId: R | string, options?: any): R;
     modelId(attrs: {}): any;
     toggle(model: R, a_next?: boolean): boolean;
     getClassName(): string;
-    readonly length: number;
-    push(model: ElementsArg<R>, options?: CollectionOptions): any;
+    get length(): number;
+    push(model: ElementsArg<R>, options?: CollectionOptions): Record[];
     pop(options?: CollectionOptions): R;
-    unshift(model: ElementsArg<R>, options?: CollectionOptions): any;
+    unshift(model: ElementsArg<R>, options?: CollectionOptions): Record[];
     shift(options?: CollectionOptions): R;
 }
 import { ArrayMixin } from './arrayMethods';
 export interface Collection<R extends Record> extends ArrayMixin<R> {
 }
-export declare type LiveUpdatesOption = boolean | ((x: any) => boolean);
-export declare type ElementsArg<R = Record> = Partial<R> | Partial<R>[];
+export type LiveUpdatesOption = boolean | ((x: any) => boolean);
+export type ElementsArg<R = Record> = Partial<R> | Partial<R>[];
 export {};

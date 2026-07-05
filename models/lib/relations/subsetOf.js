@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __extends } from "tslib";
 import { Collection } from '../collection';
 import { define, tools } from '@type-r/mixture';
 import { type } from '../record';
@@ -20,7 +20,7 @@ Collection.prototype.createSubset = function (models, options) {
 var subsetOfBehavior = ItemsBehavior.share | ItemsBehavior.persistent;
 function defineSubsetCollection(CollectionClass) {
     var SubsetOfCollection = (function (_super) {
-        tslib_1.__extends(SubsetOfCollection, _super);
+        __extends(SubsetOfCollection, _super);
         function SubsetOfCollection(recordsOrIds, options) {
             var _this = _super.call(this, [], options, subsetOfBehavior) || this;
             _this.resolvedWith = null;
@@ -29,7 +29,7 @@ function defineSubsetCollection(CollectionClass) {
         }
         Object.defineProperty(SubsetOfCollection.prototype, "__inner_state__", {
             get: function () { return this.refs || this.models; },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         SubsetOfCollection.prototype.add = function (a_elements, options) {
@@ -70,7 +70,7 @@ function defineSubsetCollection(CollectionClass) {
             get: function () {
                 return this.models.length || (this.refs ? this.refs.length : 0);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         SubsetOfCollection.prototype.clone = function (owner) {
@@ -115,7 +115,7 @@ function defineSubsetCollection(CollectionClass) {
         SubsetOfCollection.prototype.toggleAll = function () {
             return this.length ? this.reset() : this.addAll();
         };
-        SubsetOfCollection = tslib_1.__decorate([
+        SubsetOfCollection = __decorate([
             define
         ], SubsetOfCollection);
         return SubsetOfCollection;

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "es6",
     "emitDecoratorMetadata": true,
+    "types": [ "jest", "node" ],
     "outDir": "./lib",
   },
   "include":[

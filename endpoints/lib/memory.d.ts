@@ -1,5 +1,5 @@
 import { IOEndpoint, IOPromise } from '@type-r/models';
-declare type Index = (number | string)[];
+type Index = (number | string)[];
 export declare function memoryIO(init?: any[], delay?: number): MemoryEndpoint;
 export declare class MemoryEndpoint implements IOEndpoint {
     delay: number;

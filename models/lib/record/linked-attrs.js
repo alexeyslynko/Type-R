@@ -1,24 +1,24 @@
-import * as tslib_1 from "tslib";
+import { __extends } from "tslib";
 import { ValueLink } from '@linked/value';
 export function addAttributeLinks(Model) {
     var prototype = Model.prototype;
     var _attributesArray = prototype._attributesArray;
-    var AttributeRefs = new Function('model', "\n        this._model = model;\n        " + _attributesArray.map(function (_a) {
+    var AttributeRefs = new Function('model', "\n        this._model = model;\n        ".concat(_attributesArray.map(function (_a) {
         var name = _a.name;
-        return "this.$" + name + " = void 0; ";
-    }).join('\n') + "\n    ");
+        return "this.$".concat(name, " = void 0; ");
+    }).join('\n'), "\n    "));
     AttributeRefs.prototype.__ModelAttrRef = ModelAttrRef;
     for (var _i = 0, _attributesArray_1 = _attributesArray; _i < _attributesArray_1.length; _i++) {
         var attr = _attributesArray_1[_i];
         var name_1 = attr.name, attrName = JSON.stringify(name_1);
         Object.defineProperty(AttributeRefs.prototype, name_1, {
-            get: new Function("\n                var x = this.$" + name_1 + ";\n                return x && x.value === this._model." + name_1 + " ?\n                    x :\n                    ( this.$" + name_1 + " = new this.__ModelAttrRef( this._model, " + attrName + " ) );\n            ")
+            get: new Function("\n                var x = this.$".concat(name_1, ";\n                return x && x.value === this._model.").concat(name_1, " ?\n                    x :\n                    ( this.$").concat(name_1, " = new this.__ModelAttrRef( this._model, ").concat(attrName, " ) );\n            "))
         });
     }
     prototype.__Attributes$ = AttributeRefs;
 }
 var ModelAttrRef = (function (_super) {
-    tslib_1.__extends(ModelAttrRef, _super);
+    __extends(ModelAttrRef, _super);
     function ModelAttrRef(model, attr) {
         var _this = _super.call(this, model[attr]) || this;
         _this.model = model;
@@ -28,17 +28,16 @@ var ModelAttrRef = (function (_super) {
     ModelAttrRef.prototype.set = function (x) {
         this.model[this.attr] = x;
     };
-    Object.defineProperty(ModelAttrRef.prototype, "error", {
-        get: function () {
-            return this._error || (this._error = this.model.getValidationError(this.attr));
-        },
-        set: function (x) {
-            this._error = x;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return ModelAttrRef;
 }(ValueLink));
 export { ModelAttrRef };
+Object.defineProperty(ModelAttrRef.prototype, 'error', {
+    get: function () {
+        return this._error || (this._error = this.model.getValidationError(this.attr));
+    },
+    set: function (x) {
+        this._error = x;
+    },
+    configurable: true
+});
 //# sourceMappingURL=linked-attrs.js.map

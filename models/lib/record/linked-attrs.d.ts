@@ -1,7 +1,7 @@
 import { Record } from './record';
 import { ValueLink } from '@linked/value';
 export declare function addAttributeLinks(Model: typeof Record): void;
-export declare type LinkedAttributes<T> = {
+export type LinkedAttributes<T> = {
     readonly [K in keyof T]: ValueLink<T[K]>;
 };
 export declare class ModelAttrRef extends ValueLink<any> {
@@ -10,5 +10,4 @@ export declare class ModelAttrRef extends ValueLink<any> {
     constructor(model: Record, attr: string);
     set(x: any): void;
     _error: any;
-    error: any;
 }

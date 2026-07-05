@@ -1,6 +1,6 @@
 import { Model } from '@type-r/models';
 import { RestfulFetchOptions, RestfulEndpoint, RestfulIOOptions, HttpMethod } from './restful';
-export declare type ConstructUrl = (params: {
+export type ConstructUrl = (params: {
     [key: string]: any;
 }, model?: Model) => string;
 export declare function fetchModelIO(method: HttpMethod, url: ConstructUrl, options?: RestfulFetchOptions): ModelFetchEndpoint;
