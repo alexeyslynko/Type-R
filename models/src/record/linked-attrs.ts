@@ -13,19 +13,20 @@ export function addAttributeLinks( Model : typeof Record ){
     AttributeRefs.prototype.__ModelAttrRef = ModelAttrRef;
 
     for( let attr of _attributesArray ){
-        const { name } = attr;
+        const { name } = attr,
+              attrName = JSON.stringify( name );
         
         Object.defineProperty( AttributeRefs.prototype, name, {
             get : new Function(`
                 var x = this.$${name};
-                return x && x.value === this._parent.${name} ?
+                return x && x.value === this._model.${name} ?
                     x :
-                    ( this.$${name} = new this.__ModelAttrRef( this._model, ${name} ) );
+                    ( this.$${name} = new this.__ModelAttrRef( this._model, ${attrName} ) );
             `) as any
         });
     }
 
-    ( prototype as any ).AttributeRefs = AttributeRefs;
+    ( prototype as any ).__Attributes$ = AttributeRefs;
 }
 
 export type LinkedAttributes<T> = {

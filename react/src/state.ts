@@ -21,8 +21,9 @@ class Mutable {
     constructor(
         public value : Transactional
     ){
-        value._owner = this;
-        value._ownerKey || ( value._ownerKey = 'reactState' );
+        const mutable = value as any;
+        mutable._owner = this;
+        mutable._ownerKey || ( mutable._ownerKey = 'reactState' );
     }
 }
 

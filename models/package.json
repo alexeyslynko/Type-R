@@ -54,8 +54,16 @@
   },
   "homepage": "https://github.com/gaperton/TransactionalJS#readme",
   "dependencies": {
-    "tslib": "*",
-    "@type-r/mixture" : "^4.0.0",
-    "@linked/value" : "^3.0.0"
+    "@linked/value": "^3.0.0",
+    "@type-r/mixture": "^4.0.0",
+    "tslib": "*"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.3",
+    "rollup": "*",
+    "rollup-plugin-node-resolve": "*",
+    "rollup-plugin-sourcemaps": "*",
+    "rollup-plugin-uglify": "*",
+    "typescript": "*"
   }
 }

@@ -5,14 +5,19 @@
   "main": "dist/index.js",
   "author": "Vlad Balin",
   "license": "MIT",
-  "private": false,
   "dependencies": {
+    "@type-r/models": "^4.0.0",
     "react": "^16.8.6"
   },
   "devDependencies": {
-    "@types/react": "^16.8.23"
+    "@types/react": "^16.8.23",
+    "rimraf": "^2.6.3",
+    "rollup": "*",
+    "rollup-plugin-node-resolve": "*",
+    "rollup-plugin-sourcemaps": "*",
+    "rollup-plugin-uglify": "*",
+    "typescript": "*"
   },
-
   "scripts": {
     "cleanup": "rimraf ./lib",
     "compile": "yarn cleanup && tsc",

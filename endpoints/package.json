@@ -1,19 +1,24 @@
 {
     "name": "@type-r/endpoints",
-    "version":"4.0.0",
+    "version": "4.0.0",
     "main": "./dist/index.js",
     "jsnext:main": "./lib/index.js",
     "module": "./lib/index.js",
     "types": "./lib/index.d.ts",
     "scripts": {
-        "build":"tsc && rollup --config"
+        "build": "tsc && rollup --config"
     },
     "author": "Ivan Terpugov",
     "license": "MIT",
-
     "dependencies": {
-        "@type-r/models" : "^4.0.0",
-        "tslib" : "*"
+        "@type-r/models": "^4.0.0",
+        "tslib": "*"
+    },
+    "devDependencies": {
+        "rollup": "*",
+        "rollup-plugin-node-resolve": "*",
+        "rollup-plugin-sourcemaps": "*",
+        "rollup-plugin-uglify": "*",
+        "typescript": "*"
     }
 }
-  

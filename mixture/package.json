@@ -36,5 +36,12 @@
   "dependencies": {
     "tslib": "*"
   },
-  "private": false
+  "devDependencies": {
+    "rimraf": "^2.6.3",
+    "rollup": "*",
+    "rollup-plugin-node-resolve": "*",
+    "rollup-plugin-sourcemaps": "*",
+    "rollup-plugin-uglify": "*",
+    "typescript": "*"
+  }
 }

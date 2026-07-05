@@ -4,7 +4,6 @@ import { CloneOptions, Owner, Transactional, TransactionalDefinition, Transactio
 import { Infer } from './attrDef';
 import { IORecord } from './io-mixin';
 import { AttributesConstructor, AttributesContainer, AttributesCopyConstructor, AttributesValues } from './updates';
-import { LinkedAttributes } from './linked-attrs';
 export interface ConstructorOptions extends TransactionOptions {
     clone?: boolean;
 }
@@ -25,7 +24,7 @@ export declare type InferAttrs<A extends object> = {
 export declare type AttributesMixin<M extends {
     attributes: object;
 }> = InferAttrs<M['attributes']> & {
-    readonly $: LinkedAttributes<InferAttrs<M['attributes']>>;
+    readonly $: any;
 };
 export declare class Record extends Transactional implements IORecord, AttributesContainer, Iterable<any> {
     static onDefine(definition: any, BaseClass: any): void;
@@ -38,7 +37,7 @@ export declare class Record extends Transactional implements IORecord, Attribute
     static attributes: AttributesValues;
     _attributes$: object;
     __Attributes$: new (model: Record) => object;
-    readonly $: object;
+    readonly $: any;
     previousAttributes(): AttributesValues;
     readonly changed: AttributesValues;
     changedAttributes(diff?: {}): boolean | {};

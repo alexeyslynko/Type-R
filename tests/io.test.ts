@@ -1,9 +1,23 @@
 import "isomorphic-fetch";
-import nock from 'nock';
 import "reflect-metadata";
 import { auto, Collection, define, Record, Store, type, CollectionConstructor } from '@type-r/models';
 import { attributesIO, RestfulEndpoint, restfulIO, memoryIO, localStorageIO } from '@type-r/endpoints';
 import "@type-r/globals";
+
+type MockFetchHandler = ( url : string, options : RequestInit ) => [ number, any? ];
+
+function mockFetch( handler : MockFetchHandler ){
+    ( global as any ).fetch = ( url : string, options : RequestInit = {} ) => {
+        const [ status, body ] = handler( url, options ),
+              ok = status >= 200 && status < 300;
+
+        return Promise.resolve({
+            ok,
+            statusText : ok ? 'OK' : 'Not Found',
+            json : () => Promise.resolve( body === void 0 ? {} : body )
+        });
+    }
+}
 
 describe( 'IO', function(){
     describe( 'memory endpoint', () => {
@@ -165,39 +179,34 @@ describe( 'IO', function(){
                 return { id, name }
             }
 
-            nock.cleanAll()
-            nock( 'http://restful.basic' )
-                .persist()
-                .get( '/users' )
-                .reply( 200, function () {
-                    return usersStorage.models.map( cloneUser );
-                } )
+            beforeEach( () => mockFetch( ( url, options ) => {
+                const uri = url.replace( 'http://restful.basic', '' ),
+                      method = options.method || 'GET',
+                      requestBody = options.body ? JSON.parse( options.body as string ) : {};
 
-                .get( USER_REGEX )
-                .reply( function ( uri ) {
+                if( method === 'GET' && uri === '/users' ){
+                    return [ 200, usersStorage.models.map( cloneUser ) ];
+                }
+
+                if( method === 'GET' && USER_REGEX.test( uri ) ){
                     const user = getUser( getUserId( uri ) );
-                    if( user ) {
-                        return [ 200, cloneUser( user ) ]
-                    }
-                    else {
-                        console.warn( "GET: NOT FOUND", uri )
-                        return [ 404 ]
-                    }
-                } )
+                    if( user ) return [ 200, cloneUser( user ) ];
 
-                .post( '/users' )
-                .reply( 200, function ( uri, requestBody ) {
+                    console.warn( "GET: NOT FOUND", uri );
+                    return [ 404 ];
+                }
+
+                if( method === 'POST' && uri === '/users' ){
                     let id   = ++usersStorage.counter,
                         user = {
                             id: String( id ),
                             ...requestBody
                         };
                     usersStorage.models.push( user );
-                    return cloneUser( user );
-                } )
+                    return [ 200, cloneUser( user ) ];
+                }
 
-                .put( USER_REGEX )
-                .reply( function ( uri, requestBody ) {
+                if( method === 'PUT' && USER_REGEX.test( uri ) ){
                     const user = getUser( getUserId( uri ) );
 
                     if( user ) {
@@ -208,10 +217,9 @@ describe( 'IO', function(){
                         console.warn( "PUT: NOT FOUND", uri )
                         return [ 404 ]
                     }
-                } )
+                }
 
-                .delete( USER_REGEX )
-                .reply( function ( uri ) {
+                if( method === 'DELETE' && USER_REGEX.test( uri ) ){
                     const user = getUser( getUserId( uri ) )
                     if( user ) {
                         const idx = usersStorage.models.indexOf( user )
@@ -222,7 +230,10 @@ describe( 'IO', function(){
                         console.warn( "DELETE: NOT FOUND", uri )
                         return [ 404 ]
                     }
-                } )
+                }
+
+                return [ 404 ];
+            }));
 
             testEndpoint( restfulIO( 'http://restful.basic/users') )()
         } )
@@ -256,13 +267,20 @@ describe( 'IO', function(){
             root.store.id = "99";
             root.store.user.id = "1000";
 
-            nock( 'http://restful.relative' )
-                .get( '/users' )
-                .reply( 200, [ {id: 10, name: 'John'}, {id: 11, name: 'Jack'} ] )
-                .get( '/store/99' )
-                .reply( 200, {id: 99, name: 'something'} )
-                .get( '/store/99/users/1000' )
-                .reply( 200, {id: 1000, name: 'special'} )
+            beforeEach( () => mockFetch( url => {
+                const uri = url.replace( 'http://restful.relative', '' );
+
+                switch( uri ){
+                    case '/users' :
+                        return [ 200, [ {id: 10, name: 'John'}, {id: 11, name: 'Jack'} ] ];
+                    case '/store/99' :
+                        return [ 200, {id: 99, name: 'something'} ];
+                    case '/store/99/users/1000' :
+                        return [ 200, {id: 1000, name: 'special'} ];
+                    default :
+                        return [ 404 ];
+                }
+            }));
 
             it( 'resolves in simple case', done => {
                 root.store.fetch().then( () => {
